@@ -33,26 +33,31 @@ class FastSAMPredictor(DetectionPredictor):
                                     max_det=self.args.max_det,
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
+        try:
+
         
-        bboxes = p[0]
-        orig_img = orig_imgs
+            bboxes = p[0]
+            orig_img = orig_imgs
 
-        # Tạo danh sách các ảnh con
-        cropped_imgs = []
+            # Tạo danh sách các ảnh con
+            cropped_imgs = []
 
-        # Lặp qua các bounding box
-        for bbox in bboxes:
+            # Lặp qua các bounding box
+            for bbox in bboxes:
 
-            # Lấy tọa độ góc của bounding box
-            x1, y1, x2, y2 = bbox[:4]
+                # Lấy tọa độ góc của bounding box
+                x1, y1, x2, y2 = bbox[:4]
 
-            # Cắt ảnh gốc theo bounding box
-            cropped_img = orig_img[y1:y2, x1:x2]
+                # Cắt ảnh gốc theo bounding box
+                cropped_img = orig_img[y1:y2, x1:x2]
 
-            # Thêm ảnh con vào danh sách
-            cropped_imgs.append(cropped_img)
+                # Thêm ảnh con vào danh sách
+                cropped_imgs.append(cropped_img)
 
-            cv2.imwrite('/content/image{x2}')
+                cv2.imwrite('/content/image{x2}')
+
+        except:
+            print("no")
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
