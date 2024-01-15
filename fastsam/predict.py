@@ -39,7 +39,7 @@ class FastSAMPredictor(DetectionPredictor):
             cropped_imgs = []
             print(img.shape)
 
-            img_test = img[0]
+            img_test = img[0].cpu()
             print(img_test.shape)
             img_test = img_test.transpose(0, 2)
             print(img_test.shape)
