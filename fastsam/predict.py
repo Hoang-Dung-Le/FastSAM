@@ -44,7 +44,7 @@ class FastSAMPredictor(DetectionPredictor):
             print(img_test.shape)
             img_test = np.transpose(img_test, (2, 1, 0))
             print(img_test.shape)
-            cv2.imwrite("anhgoc.jpg", img_test)
+            cv2.imwrite("anhgoc.jpg", img_test * 255)
             # print(len(p[0][1]))s
 
             print("ddax vao ")
