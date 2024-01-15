@@ -23,7 +23,8 @@ class FastSAMPredictor(DetectionPredictor):
         
         print("len p: ", len(p))
         print(type(p))
-        print(p.shape)
+        # print(p.shape)
+        print(len(p[0]))
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
