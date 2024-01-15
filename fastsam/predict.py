@@ -37,7 +37,7 @@ class FastSAMPredictor(DetectionPredictor):
         try:
             # p1 = [tensor.cpu().numpy() for tensor in p]
             cropped_imgs = []
-            print(len(p[0][1]))
+            # print(len(p[0][1]))s
             for box in p[0]:
                 box = box.cpu().numpy()
                 x1, y1, x2, y2 = box[:4].astype(int)
@@ -47,7 +47,8 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 # Thêm vào danh sách kết quả
                 cropped_imgs.append(cropped) 
-
+                print(type(cropped))
+                print(cropped.shape)
                 cv2.imwrite('/content/{img}', cropped)
 
         except Exception as e:
