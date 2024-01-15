@@ -44,6 +44,8 @@ class FastSAMPredictor(DetectionPredictor):
             img_test = img_test.transpose(0, 2)
             img_test = img_test.cpu()
             print(type(img_test))
+            img_test = img_test.numpy()
+            print(type(img_test))
             cv2.imwrite("anhgoc.jpg", img_test)
             # print(len(p[0][1]))s
             for box in p[0]:
