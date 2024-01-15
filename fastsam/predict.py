@@ -31,7 +31,7 @@ class FastSAMPredictor(DetectionPredictor):
                                     max_det=self.args.max_det,
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
-
+        print("ok")
         
         # print("len p: ", len(p))
         # print(type(p))
