@@ -9,6 +9,7 @@ from .utils import bbox_iou
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image
+import os
 
 
 def save_image_with_boxes(image_path, save_dir, boxes, names):
@@ -60,8 +61,11 @@ class FastSAMPredictor(DetectionPredictor):
         # print(p.shape)
         print(len(p[0]))
 
+        save_dir = '/content/'
+        os.makedirs(save_dir, exist_ok=True)
+
         for i, pred in enumerate(p):
-            save_image_with_boxes(orig_imgs[i], pred[:, :4], self.model.names)
+            save_image_with_boxes(orig_imgs[i], save_dir, pred[:, :4], self.model.names)
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
