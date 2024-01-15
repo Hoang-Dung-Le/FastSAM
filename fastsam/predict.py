@@ -56,8 +56,8 @@ class FastSAMPredictor(DetectionPredictor):
 
                 cv2.imwrite('/content/image{x2}')
 
-        except:
-            print("no")
+        except Exception as e:
+            print(e)
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
