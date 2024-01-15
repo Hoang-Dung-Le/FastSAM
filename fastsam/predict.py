@@ -43,7 +43,7 @@ class FastSAMPredictor(DetectionPredictor):
             img_test = img_test.cpu().numpy()
             print(img_test.shape)
             img_test = np.transpose(img_test, (2, 1, 0))
-            print("ok")
+            print(img_test.shape)
             cv2.imwrite("anhgoc.jpg", img_test)
             # print(len(p[0][1]))s
 
