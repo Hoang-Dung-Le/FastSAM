@@ -39,6 +39,8 @@ class FastSAMPredictor(DetectionPredictor):
             cropped_imgs = []
             for box in p:
                 box = box.cpu().numpy()
+                print(box)
+                break
                 x1, y1, x2, y2 = box[:4].astype(int)
                 
                 # Cắt ảnh từ box
