@@ -38,6 +38,9 @@ class FastSAMPredictor(DetectionPredictor):
             # p1 = [tensor.cpu().numpy() for tensor in p]
             cropped_imgs = []
             print(img.shape)
+
+            img_test = img[0]
+            img_test = img_test.transpose(1, 3)
             # print(len(p[0][1]))s
             for box in p[0]:
                 box = box.cpu().numpy()
@@ -45,13 +48,13 @@ class FastSAMPredictor(DetectionPredictor):
 
                 # Kiểm tra giá trị tọa độ và kích thước ảnh
                 print("Tọa độ bounding box:", x1, y1, x2, y2)
-                print("Kích thước ảnh gốc:", img.shape)
+                print("Kích thước ảnh gốc:", img_test.shape)
 
                 # Cắt ảnh từ box
-                if x1 < 0 or y1 < 0 or x2 > img.shape[1] or y2 > img.shape[0]:
+                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
-                cropped = img[y1:y2, x1:x2]
+                cropped = img_test[y1:y2, x1:x2]
                 print(cropped.shape)
 
         except Exception as e:
