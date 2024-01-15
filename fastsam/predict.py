@@ -11,7 +11,7 @@ import matplotlib.patches as patches
 from PIL import Image
 
 
-def show_image_with_boxes(image_path, boxes, names):
+def save_image_with_boxes(image_path, save_dir, boxes, names):
     # Load the image
     img = Image.open(image_path)
 
@@ -19,7 +19,7 @@ def show_image_with_boxes(image_path, boxes, names):
     fig, ax = plt.subplots(1)
 
     # Display the image
-    ax.imshow(img)
+    # ax.imshow(img)
 
     # Add bounding boxes to the image
     for box, name in zip(boxes, names):
@@ -28,7 +28,12 @@ def show_image_with_boxes(image_path, boxes, names):
         ax.add_patch(rect)
         ax.text(x, y, name, color='r', fontsize=8, bbox=dict(facecolor='white', alpha=0.7))
 
-    plt.show()
+    # Save the image with bounding boxes
+    filename = os.path.basename(image_path)
+    save_path = os.path.join(save_dir, filename)
+    plt.savefig(save_path)
+    plt.close()
+
 
 
 
@@ -56,7 +61,7 @@ class FastSAMPredictor(DetectionPredictor):
         print(len(p[0]))
 
         for i, pred in enumerate(p):
-            show_image_with_boxes(orig_imgs[i], pred[:, :4], self.model.names)
+            save_image_with_boxes(orig_imgs[i], pred[:, :4], self.model.names)
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
