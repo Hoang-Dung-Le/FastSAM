@@ -41,18 +41,18 @@ class FastSAMPredictor(DetectionPredictor):
             # print(len(p[0][1]))s
             for box in p[0]:
                 box = box.cpu().numpy()
-                x1, y1, x2, y2 = box[:4].astype(int)
-                
+                x1, y1, x2, y2 = box[:4].astype(int)  # Đảm bảo thứ tự tọa độ chính xác
+
+                # Kiểm tra giá trị tọa độ và kích thước ảnh
+                print("Tọa độ bounding box:", x1, y1, x2, y2)
+                print("Kích thước ảnh gốc:", img.shape)
+
                 # Cắt ảnh từ box
+                if x1 < 0 or y1 < 0 or x2 > img.shape[1] or y2 > img.shape[0]:
+                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+                    continue
                 cropped = img[y1:y2, x1:x2]
                 print(cropped.shape)
-                cropped = cropped.cpu().numpy()
-                # Thêm vào danh sách kết quả
-                cropped_imgs.append(cropped) 
-                print(type(cropped))
-                print(cropped.shape)    
-                # cv2.imwrite('/content/{img}', cropped)
-                plt.imshow(cropped)
 
         except Exception as e:
             print(e)
