@@ -20,6 +20,30 @@ class FastSAMPredictor(DetectionPredictor):
                                     max_det=self.args.max_det,
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
+
+        import matplotlib.pyplot as plt
+        import matplotlib.patches as patches
+
+        bboxes = p[0]
+
+# Lấy hình ảnh gốc
+        orig_img = orig_imgs
+
+        fig, ax = plt.subplots(figsize=(10, 10))
+
+# Hiển thị hình ảnh gốc
+        ax.imshow(orig_img)
+
+        for bbox in bboxes:
+            x1, y1, x2, y2 = bbox[:4]
+            conf = bbox[4]
+
+            # Tạo một hình chữ nhật với màu đỏ và độ mờ 0.5
+            rect = patches.Rectangle((x1, y1), x2 - x1, y2 - y1, linewidth=2, edgecolor='red', facecolor='none', alpha=0.5)
+            ax.add_patch(rect)
+
+            # Hiển thị độ tin cậy phía trên bounding box
+            ax.text(x1, y1 - 5, f"{conf:.2f}", bbox=dict(facecolor='white', alpha=0.5))
         
         print("len p: ", len(p))
         print(type(p))
