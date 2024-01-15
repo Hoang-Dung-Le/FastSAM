@@ -12,29 +12,6 @@ from PIL import Image
 import os
 
 
-def save_image_with_boxes(image_path, save_dir, boxes, names):
-    # Load the image
-    img = Image.open(image_path)
-
-    # Create figure and axes
-    fig, ax = plt.subplots(1)
-
-    # Display the image
-    # ax.imshow(img)
-
-    # Add bounding boxes to the image
-    for box, name in zip(boxes, names):
-        x, y, w, h = box[:4]
-        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='r', facecolor='none', label=name)
-        ax.add_patch(rect)
-        ax.text(x, y, name, color='r', fontsize=8, bbox=dict(facecolor='white', alpha=0.7))
-
-    # Save the image with bounding boxes
-    filename = os.path.basename(image_path)
-    save_path = os.path.join(save_dir, filename)
-    plt.savefig(save_path)
-    plt.close()
-
 
 
 
@@ -56,16 +33,14 @@ class FastSAMPredictor(DetectionPredictor):
                                     classes=self.args.classes)
 
         
-        print("len p: ", len(p))
-        print(type(p))
-        # print(p.shape)
-        print(len(p[0]))
+        # print("len p: ", len(p))
+        # print(type(p))
+        # # print(p.shape)
+        # print(len(p[0]))
 
-        save_dir = '/content/'
-        os.makedirs(save_dir, exist_ok=True)
+        # save_dir = '/content/'
+        # os.makedirs(save_dir, exist_ok=True)
 
-        for i, pred in enumerate(p):
-            save_image_with_boxes(orig_imgs[i], save_dir, pred[:, :4], self.model.names)
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
