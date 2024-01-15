@@ -34,7 +34,7 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         try:
-
+            p = p.numpy()
             cropped_imgs = []
             for box in p:
                 x1, y1, x2, y2 = box[:4].astype(int)
