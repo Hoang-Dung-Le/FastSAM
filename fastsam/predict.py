@@ -41,7 +41,7 @@ class FastSAMPredictor(DetectionPredictor):
 
             img_test = img[0]
             print(img_test.shape)
-            img_test = img_test.transpose(1, 3)
+            img_test = img_test.transpose(0, 2)
             print(img_test.shape)
             # print(len(p[0][1]))s
             for box in p[0]:
