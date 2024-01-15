@@ -59,8 +59,9 @@ class FastSAMPredictor(DetectionPredictor):
                 cropped = img_test[y1:y2, x1:x2]
                 print(cropped.shape)
                 cropped = cropped.cpu().numpy()
-                # cv2.imwrite('/content/{x1}', cropped)
-                plt.imshow(cropped)
+                print(type(cropped))
+                cv2.imwrite('/content/{x1}', cropped)
+                # plt.imshow(cropped)
 
         except Exception as e:
             print(e)
