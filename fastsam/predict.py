@@ -44,7 +44,7 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 # Cắt ảnh từ box
                 cropped = img[y1:y2, x1:x2]
-                
+                cropped = cropped.numpy()
                 # Thêm vào danh sách kết quả
                 cropped_imgs.append(cropped) 
                 print(type(cropped))
