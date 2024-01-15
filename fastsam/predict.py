@@ -5,6 +5,34 @@ from ultralytics.yolo.utils import DEFAULT_CFG, ops
 from ultralytics.yolo.v8.detect.predict import DetectionPredictor
 from .utils import bbox_iou
 
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+from PIL import Image
+
+
+def show_image_with_boxes(image_path, boxes, names):
+    # Load the image
+    img = Image.open(image_path)
+
+    # Create figure and axes
+    fig, ax = plt.subplots(1)
+
+    # Display the image
+    ax.imshow(img)
+
+    # Add bounding boxes to the image
+    for box, name in zip(boxes, names):
+        x, y, w, h = box[:4]
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='r', facecolor='none', label=name)
+        ax.add_patch(rect)
+        ax.text(x, y, name, color='r', fontsize=8, bbox=dict(facecolor='white', alpha=0.7))
+
+    plt.show()
+
+
+
+
 class FastSAMPredictor(DetectionPredictor):
 
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
@@ -21,34 +49,14 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
 
-        import matplotlib.pyplot as plt
-        import matplotlib.patches as patches
-
-        bboxes = p[0]
-
-# Lấy hình ảnh gốc
-        orig_img = orig_imgs
-
-        fig, ax = plt.subplots(figsize=(10, 10))
-
-# Hiển thị hình ảnh gốc
-        ax.imshow(orig_img)
-
-        for bbox in bboxes:
-            x1, y1, x2, y2 = bbox[:4]
-            conf = bbox[4]
-
-            # Tạo một hình chữ nhật với màu đỏ và độ mờ 0.5
-            rect = patches.Rectangle((x1, y1), x2 - x1, y2 - y1, linewidth=2, edgecolor='red', facecolor='none', alpha=0.5)
-            ax.add_patch(rect)
-
-            # Hiển thị độ tin cậy phía trên bounding box
-            ax.text(x1, y1 - 5, f"{conf:.2f}", bbox=dict(facecolor='white', alpha=0.5))
         
         print("len p: ", len(p))
         print(type(p))
         # print(p.shape)
         print(len(p[0]))
+
+        for i, pred in enumerate(p):
+            show_image_with_boxes(orig_imgs[i], pred[:, :4], self.model.names)
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
