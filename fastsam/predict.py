@@ -37,7 +37,7 @@ class FastSAMPredictor(DetectionPredictor):
         try:
             # p1 = [tensor.cpu().numpy() for tensor in p]
             cropped_imgs = []
-            print(len(p[0]))
+            print(len(p[0][1]))
             for box in p[0]:
                 box = box.cpu().numpy()
                 x1, y1, x2, y2 = box[:4].astype(int)
