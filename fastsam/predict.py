@@ -20,6 +20,10 @@ class FastSAMPredictor(DetectionPredictor):
                                     max_det=self.args.max_det,
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
+        
+        print("len p: ", len(p))
+        print(type(p))
+        print(p)
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
