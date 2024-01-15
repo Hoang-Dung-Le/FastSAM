@@ -11,6 +11,8 @@ import matplotlib.patches as patches
 from PIL import Image
 import os
 
+import cv2
+
 
 
 
@@ -31,16 +33,26 @@ class FastSAMPredictor(DetectionPredictor):
                                     max_det=self.args.max_det,
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
-        print("ok")
         
-        # print("len p: ", len(p))
-        # print(type(p))
-        # # print(p.shape)
-        # print(len(p[0]))
+        bboxes = p[0]
+        orig_img = orig_imgs
 
-        # save_dir = '/content/'
-        # os.makedirs(save_dir, exist_ok=True)
+        # Tạo danh sách các ảnh con
+        cropped_imgs = []
 
+        # Lặp qua các bounding box
+        for bbox in bboxes:
+
+            # Lấy tọa độ góc của bounding box
+            x1, y1, x2, y2 = bbox[:4]
+
+            # Cắt ảnh gốc theo bounding box
+            cropped_img = orig_img[y1:y2, x1:x2]
+
+            # Thêm ảnh con vào danh sách
+            cropped_imgs.append(cropped_img)
+
+            cv2.imwrite('/content/image{x2}')
 
         results = []
         if len(p) == 0 or len(p[0]) == 0:
