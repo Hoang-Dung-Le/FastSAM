@@ -44,11 +44,12 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 # Cắt ảnh từ box
                 cropped = img[y1:y2, x1:x2]
+                print(cropped.shape)
                 cropped = cropped.cpu().numpy()
                 # Thêm vào danh sách kết quả
                 cropped_imgs.append(cropped) 
                 print(type(cropped))
-                print(cropped.shape)
+                print(cropped.shape)    
                 cv2.imwrite('/content/{img}', cropped)
 
         except Exception as e:
