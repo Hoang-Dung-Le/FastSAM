@@ -57,7 +57,7 @@ class FastSAMPredictor(DetectionPredictor):
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
                 cropped = img_test[y1:y2, x1:x2]
-                print(cropped.shape)
+                cv2.imwrite('/content/{x1}', cropped)
 
         except Exception as e:
             print(e)
