@@ -35,8 +35,9 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         try:
+            print(type(p))
             if isinstance(p, torch.Tensor):
-
+                print("ok")
                 p = p.detach().cpu().numpy() 
             elif isinstance(p, list):
                 p = np.array(p)
