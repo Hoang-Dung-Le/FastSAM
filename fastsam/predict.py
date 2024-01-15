@@ -9,6 +9,7 @@ from .utils import bbox_iou
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image
+import numpy as np
 import os
 
 import cv2
@@ -34,7 +35,10 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         try:
-            p = p.numpy()
+            if isinstance(p, torch.Tensor):
+                p = p.numpy()
+            elif isinstance(p, list):
+                p = np.array(p)
             cropped_imgs = []
             for box in p:
                 x1, y1, x2, y2 = box[:4].astype(int)
