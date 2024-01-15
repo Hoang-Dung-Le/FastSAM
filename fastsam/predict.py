@@ -46,7 +46,7 @@ class FastSAMPredictor(DetectionPredictor):
             print(type(img_test))
             img_test = img_test.numpy()
             print(type(img_test))
-            cv2.imwrite("anhgoc.jpg", img_test)
+            cv2.imwrite("anhgoc.jpg", img_test,cv2.IMREAD_COLOR)
             # print(len(p[0][1]))s
 
             print("ddax vao ")
