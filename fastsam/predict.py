@@ -38,6 +38,7 @@ class FastSAMPredictor(DetectionPredictor):
             if isinstance(p, torch.Tensor):
                 p = p.cpu().numpy()
             elif isinstance(p, list):
+                p = p.cpu()
                 p = np.array(p)
             cropped_imgs = []
             for box in p:
