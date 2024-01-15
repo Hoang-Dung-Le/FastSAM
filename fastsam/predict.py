@@ -39,7 +39,7 @@ class FastSAMPredictor(DetectionPredictor):
             cropped_imgs = []
             print(img.shape)
 
-            img_test = img[0].cpu()
+            img_test = img[0]
             # print(img_test.shape)
             img_test = img_test.transpose(0, 2)
             img_test = img_test.cpu()
@@ -48,6 +48,8 @@ class FastSAMPredictor(DetectionPredictor):
             print(type(img_test))
             cv2.imwrite("anhgoc.jpg", img_test)
             # print(len(p[0][1]))s
+
+            print("ddax vao ")
             for box in p[0]:
                 box = box.cpu().numpy()
                 x1, y1, x2, y2 = box[:4].astype(int)  # Đảm bảo thứ tự tọa độ chính xác
