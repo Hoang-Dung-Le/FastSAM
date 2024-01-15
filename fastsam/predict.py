@@ -37,6 +37,7 @@ class FastSAMPredictor(DetectionPredictor):
 
         
             bboxes = p[0]
+            print(bboxes)
             orig_img = orig_imgs
 
             # Tạo danh sách các ảnh con
