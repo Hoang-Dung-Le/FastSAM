@@ -37,33 +37,21 @@ class FastSAMPredictor(DetectionPredictor):
         try:
             # p1 = [tensor.cpu().numpy() for tensor in p]
             cropped_imgs = []
-            print(img.shape)
 
             img_test = img[0]
             img_test = img_test.cpu().numpy()
-            print(img_test.shape)
+        
             img_test = np.transpose(img_test, (2, 1, 0))
-            print(img_test.shape)
-            cv2.imwrite("anhgoc.jpg", img_test * 255)
-            # print(len(p[0][1]))s
-
-            print("ddax vao ")
             for box in p[0]:
                 box = box.cpu().numpy()
                 x1, y1, x2, y2 = box[:4].astype(int)  # Đảm bảo thứ tự tọa độ chính xác
-
-                # Kiểm tra giá trị tọa độ và kích thước ảnh
-                print("Tọa độ bounding box:", x1, y1, x2, y2)
-                print("Kích thước ảnh gốc:", img_test.shape)
 
                 # Cắt ảnh từ box
                 if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
                 cropped = img_test[y1:y2, x1:x2]
-                print(cropped.shape)
                 cropped = cropped
-                print(type(cropped))
                 cv2.imwrite(f'/content/{x1}.jpg', cropped * 255)
                 # plt.imshow(cropped)
 
@@ -78,6 +66,7 @@ class FastSAMPredictor(DetectionPredictor):
         full_box = torch.zeros_like(p[0][0])
         full_box[2], full_box[3], full_box[4], full_box[6:] = img.shape[3], img.shape[2], 1.0, 1.0
         full_box = full_box.view(1, -1)
+        print(full_box.shape)
         critical_iou_index = bbox_iou(full_box[0][:4], p[0][:, :4], iou_thres=0.9, image_shape=img.shape[2:])
         if critical_iou_index.numel() != 0:
             full_box[0][4] = p[0][critical_iou_index][:,4]
