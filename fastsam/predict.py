@@ -74,7 +74,7 @@ class FastSAMPredictor(DetectionPredictor):
 
         
 
-        print(p[0][critical_iou_index].shape)
+        print(p[0][critical_iou_index])
         
         proto = preds[1][-1] if len(preds[1]) == 3 else preds[1]  # second output is len 3 if pt, but only 1 if exported
         for i, pred in enumerate(p):
