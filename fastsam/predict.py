@@ -58,9 +58,10 @@ class FastSAMPredictor(DetectionPredictor):
 
             box = p[0][critical_iou_index]
             box = box.cpu().numpy()
+            print(box.shape)
             x1, y1, x2, y2 = box[:4].astype(int)
             cropped = img_test[y1:y2, x1:x2]
-            cv2.imwrite(f'/content/{x1}.jpg', cropped * 255)
+            cv2.imwrite(f'/content/{2}.jpg', cropped * 255)
             # p1 = [tensor.cpu().numpy() for tensor in p]
             # cropped_imgs = []
 
