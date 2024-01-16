@@ -48,8 +48,9 @@ class FastSAMPredictor(DetectionPredictor):
         # print(critical_iou_index)
     
         if critical_iou_index.numel() != 0:
-            full_box[0][4] = p[0][critical_iou_index][:,4]
-            full_box[0][6:] = p[0][critical_iou_index][:,6:]
+            print("da vao")
+            # full_box[0][4] = p[0][critical_iou_index][:,4]
+            # full_box[0][6:] = p[0][critical_iou_index][:,6:]
             try:
                 critical_box = p[0][critical_iou_index]
                 x1, y1, x2, y2 = critical_box[:4].astype(int)
