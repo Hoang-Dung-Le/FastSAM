@@ -52,24 +52,33 @@ class FastSAMPredictor(DetectionPredictor):
 
 
         try:
-            # p1 = [tensor.cpu().numpy() for tensor in p]
-            cropped_imgs = []
 
             img_test = img[0]
             img_test = img_test.cpu().numpy()
-            print(img_test.shape)
-            img_test = np.transpose(img_test, (2, 1, 0))
-            for box in p[0]:
-                box = box.cpu().numpy()
-                x1, y1, x2, y2 = box[:4].astype(int)  # Đảm bảo thứ tự tọa độ chính xác
 
-                # Cắt ảnh từ box
-                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-                    continue
-                cropped = img_test[y1:y2, x1:x2]
-                cropped = cropped
-                cv2.imwrite(f'/content/{x1}.jpg', cropped * 255)
+            box = p[0][critical_iou_index]
+            box = box.cpu().numpy()
+            x1, y1, x2, y2 = box[:4].astype(int)
+            cropped = img_test[y1:y2, x1:x2]
+            cv2.imwrite(f'/content/{x1}.jpg', cropped * 255)
+            # p1 = [tensor.cpu().numpy() for tensor in p]
+            # cropped_imgs = []
+
+            # img_test = img[0]
+            # img_test = img_test.cpu().numpy()
+            # print(p[0])
+            # img_test = np.transpose(img_test, (2, 1, 0))
+            # for box in p[0]:
+            #     box = box.cpu().numpy()
+            #     x1, y1, x2, y2 = box[:4].astype(int)  # Đảm bảo thứ tự tọa độ chính xác
+
+            #     # Cắt ảnh từ box
+            #     if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
+            #         print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+            #         continue
+            #     cropped = img_test[y1:y2, x1:x2]
+            #     cropped = cropped
+            #     cv2.imwrite(f'/content/{x1}.jpg', cropped * 255)
                 # plt.imshow(cropped)
 
         except Exception as e:
