@@ -57,7 +57,7 @@ class FastSAMPredictor(DetectionPredictor):
 
             img_test = img[0]
             img_test = img_test.cpu().numpy()
-        
+            print(img_test.shape)
             img_test = np.transpose(img_test, (2, 1, 0))
             for box in p[0]:
                 box = box.cpu().numpy()
