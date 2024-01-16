@@ -66,7 +66,7 @@ class FastSAMPredictor(DetectionPredictor):
             cropped = img_test[y1:y2, x1:x2]
             cv2.imwrite(f'/content/{2}.jpg', cropped * 255)
             # p1 = [tensor.cpu().numpy() for tensor in p]
-            # cropped_imgs = []
+            # cropped_imgs = [] 
 
             # img_test = img[0]
             # img_test = img_test.cpu().numpy()
@@ -87,8 +87,8 @@ class FastSAMPredictor(DetectionPredictor):
 
         except Exception as e:
             print(e)
-        
         proto = preds[1][-1] if len(preds[1]) == 3 else preds[1]  # second output is len 3 if pt, but only 1 if exported
+        print(proto)
         for i, pred in enumerate(p):
             orig_img = orig_imgs[i] if isinstance(orig_imgs, list) else orig_imgs
             path = self.batch[0]
