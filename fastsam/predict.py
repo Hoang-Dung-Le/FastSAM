@@ -66,12 +66,15 @@ class FastSAMPredictor(DetectionPredictor):
         full_box = torch.zeros_like(p[0][0])
         full_box[2], full_box[3], full_box[4], full_box[6:] = img.shape[3], img.shape[2], 1.0, 1.0
         full_box = full_box.view(1, -1)
-        print(full_box[0].shape)
         critical_iou_index = bbox_iou(full_box[0][:4], p[0][:, :4], iou_thres=0.9, image_shape=img.shape[2:])
         if critical_iou_index.numel() != 0:
             full_box[0][4] = p[0][critical_iou_index][:,4]
             full_box[0][6:] = p[0][critical_iou_index][:,6:]
             p[0][critical_iou_index] = full_box
+
+        
+
+        print(p[0][critical_iou_index].shape)
         
         proto = preds[1][-1] if len(preds[1]) == 3 else preds[1]  # second output is len 3 if pt, but only 1 if exported
         for i, pred in enumerate(p):
