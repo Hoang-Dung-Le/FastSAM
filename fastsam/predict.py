@@ -46,14 +46,18 @@ class FastSAMPredictor(DetectionPredictor):
         full_box = full_box.view(1, -1)
         critical_iou_index = bbox_iou(full_box[0][:4], p[0][:, :4], iou_thres=0.9, image_shape=img.shape[2:])
         # print(critical_iou_index)
-        
+    
         if critical_iou_index.numel() != 0:
             full_box[0][4] = p[0][critical_iou_index][:,4]
             full_box[0][6:] = p[0][critical_iou_index][:,6:]
-            critical_box = p[0][critical_iou_index]
-            x1, y1, x2, y2 = critical_box[:4].astype(int)
+            try:
+                critical_box = p[0][critical_iou_index]
+                x1, y1, x2, y2 = critical_box[:4].astype(int)
+                print(x1, y1, x2, y2)
+            except Exception as e:
+                print(e)
 
-        print(x1, y1, x2, y2)
+        
 
         try:
 
