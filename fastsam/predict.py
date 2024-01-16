@@ -57,6 +57,7 @@ class FastSAMPredictor(DetectionPredictor):
             img_test = img_test.cpu().numpy()
 
             box = p[0][critical_iou_index]
+            print(box)
             box = box.squeeze()
             box = box.cpu().numpy()
             print(box.shape)
