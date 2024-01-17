@@ -74,6 +74,7 @@ def parse_args():
 def main(args):
     # load model
     model = FastSAM(args.model_path)
+    print(model)
     args.point_prompt = ast.literal_eval(args.point_prompt)
     args.box_prompt = convert_box_xywh_to_xyxy(ast.literal_eval(args.box_prompt))
     args.point_label = ast.literal_eval(args.point_label)
@@ -88,7 +89,6 @@ def main(args):
         iou=args.iou    
         )
 
-    print(everything_results)
     bboxes = None
     points = None
     point_label = None
