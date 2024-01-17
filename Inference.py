@@ -88,7 +88,7 @@ def main(args):
         iou=args.iou    
         )
 
-    print(model)
+    print(everything_results)
     bboxes = None
     points = None
     point_label = None
