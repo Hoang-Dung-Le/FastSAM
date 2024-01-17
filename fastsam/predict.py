@@ -35,6 +35,8 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         
+        
+        
         try:
             img_test = img[0]
             img_test = img_test.cpu().numpy()

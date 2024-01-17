@@ -87,6 +87,8 @@ def main(args):
         conf=args.conf,
         iou=args.iou    
         )
+
+    print(model)
     bboxes = None
     points = None
     point_label = None
