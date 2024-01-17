@@ -75,20 +75,7 @@ def main(args):
     # load model
     model = FastSAM(args.model_path)
     # Print the model summary with layer names and output shapes
-    print("Layer (type)\t\t\t\tOutput Shape\t\t\tParam #")
-    print("==================================================================================")
-    total_params = 0
-    for name, param in model.named_parameters():
-        if param.requires_grad:
-            num_params = param.numel()
-            total_params += num_params
-            if param.dim() == 1:
-                print(f"{name:<40}{param.size()}\t\t{num_params}")
-            else:
-                print(f"{name:<40}{list(param.size())}\t\t\t{num_params}")
-
-    print("==================================================================================")
-    print(f"Total params: {total_params}")
+    print(type(model))
     args.point_prompt = ast.literal_eval(args.point_prompt)
     args.box_prompt = convert_box_xywh_to_xyxy(ast.literal_eval(args.box_prompt))
     args.point_label = ast.literal_eval(args.point_label)
