@@ -5,7 +5,7 @@ from ultralytics.yolo.utils import DEFAULT_CFG, ops
 from ultralytics.yolo.v8.detect.predict import DetectionPredictor
 from .utils import bbox_iou
 
-from resnet import CustomResNet34Classifier
+from .resnet import CustomResNet34Classifier
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
