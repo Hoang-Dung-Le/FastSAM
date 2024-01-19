@@ -74,8 +74,6 @@ def parse_args():
 def main(args):
     # load model
     model = FastSAM(args.model_path)
-    # Print the model summary with layer names and output shapes
-    print(type(model))
     args.point_prompt = ast.literal_eval(args.point_prompt)
     args.box_prompt = convert_box_xywh_to_xyxy(ast.literal_eval(args.box_prompt))
     args.point_label = ast.literal_eval(args.point_label)
