@@ -14,19 +14,19 @@ class CustomResNet34Classifier:
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
-    def _load_model(self, model_path, num_classes):
+    def _load_model(self, model_path):
         # Khởi tạo mô hình ResNet34
         model = models.resnet34()
-        model.fc = nn.Linear(model.fc.in_features, num_classes)
+        # model.fc = nn.Linear(model.fc.in_features, num_classes)
         
         # Load trạng thái đã được lưu của mô hình
         model.load_state_dict(torch.load(model_path))
         
         return model
 
-    def predict(self, image_path):
+    def predict(self, image):
         # Mở ảnh và áp dụng các biến đổi
-        image = Image.open(image_path).convert("RGB")
+        # image = Image.open(image_path).convert("RGB")
         input_tensor = self.transform(image)
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

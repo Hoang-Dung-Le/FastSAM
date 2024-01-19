@@ -5,6 +5,7 @@ from ultralytics.yolo.utils import DEFAULT_CFG, ops
 from ultralytics.yolo.v8.detect.predict import DetectionPredictor
 from .utils import bbox_iou
 
+from resnet import CustomResNet34Classifier
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -24,6 +25,7 @@ class FastSAMPredictor(DetectionPredictor):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
+        self.model = CustomResNet34Classifier('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth')
 
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
@@ -37,26 +39,26 @@ class FastSAMPredictor(DetectionPredictor):
         
 
         
-        # try:
-        #     img_test = img[0]
-        #     img_test = img_test.cpu().numpy()
-        #     # print(p[0])
-        #     img_test = np.transpose(img_test, (2, 1, 0))
-        #     for box in p[0]:
-        #         box = box.cpu().numpy()
-        #         x1, y1, x2, y2 = box[:4].astype(int)
+        try:
+            img_test = img[0]
+            img_test = img_test.cpu().numpy()
+            # print(p[0])
+            img_test = np.transpose(img_test, (2, 1, 0))
+            for box in p[0]:
+                box = box.cpu().numpy()
+                x1, y1, x2, y2 = box[:4].astype(int)
 
             
-        #         if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-        #             print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-        #             continue
-        #         cropped = img_test[y1:y2, x1:x2]
-        #         cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-        #         cv2.imwrite(f'/content/drive/MyDrive/CV/fastsam/test_dog_imgs/{x1}.jpg', cropped * 255)
-        #         plt.imshow(cropped)
+                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
+                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+                    continue
+                cropped = img_test[y1:y2, x1:x2]
+                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                # cv2.imwrite(f'/content/drive/MyDrive/CV/fastsam/test_dog_imgs/{x1}.jpg', cropped * 255)
+                # plt.imshow(cropped)
 
-        # except Exception as e:
-        #     print(e)
+        except Exception as e:
+            print(e)
         
 
         results = []
