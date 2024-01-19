@@ -5,9 +5,9 @@ import torch.nn as nn
 from PIL import Image
 
 class CustomResNet34Classifier:
-    def __init__(self, model_path, num_classes):
+    def __init__(self, model_path):
         # Khởi tạo mô hình và load trạng thái đã được lưu
-        self.model = self._load_model(model_path, num_classes)
+        self.model = self._load_model(model_path)
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
