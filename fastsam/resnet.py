@@ -21,7 +21,7 @@ class CustomResNet34Classifier:
         
         # Load trạng thái đã được lưu của mô hình
         model.load_state_dict(torch.load(model_path))
-        
+        print(model)
         return model
 
     def predict(self, image):
