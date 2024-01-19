@@ -26,7 +26,7 @@ class FastSAMPredictor(DetectionPredictor):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
         self.model = CustomResNet34Classifier('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
-
+        print(self.model)
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
         p = ops.non_max_suppression(preds[0],
