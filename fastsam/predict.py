@@ -54,6 +54,8 @@ class FastSAMPredictor(DetectionPredictor):
                     continue
                 cropped = img_test[y1:y2, x1:x2]
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                pred = self.model.predict(cropped)
+                print(pred)
                 # cv2.imwrite(f'/content/drive/MyDrive/CV/fastsam/test_dog_imgs/{x1}.jpg', cropped * 255)
                 # plt.imshow(cropped)
 
