@@ -101,7 +101,7 @@ class FastSAMPredictor(DetectionPredictor):
               
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
                 
-                cropped = torch.from_numpy(cropped)
+                # cropped = torch.from_numpy(cropped)
                 pred = self.predict(cropped)
                 print(pred)
 
