@@ -39,6 +39,7 @@ class FastSAMPredictor(DetectionPredictor):
         # Mở ảnh và áp dụng các biến đổi
         # image = Image.open(image_path).convert("RGB")
         input_tensor = self.transform(image)
+        input_tensor = torch.from_numpy(input_tensor)
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -94,9 +95,9 @@ class FastSAMPredictor(DetectionPredictor):
                 print(type(cropped))
               
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                cropped_tensor = torch.from_numpy(cropped)
-                print(type(cropped_tensor))
-                pred = self.predict(cropped_tensor)
+                
+               
+                pred = self.predict(cropped)
                 print(pred)
 
         except Exception as e:
