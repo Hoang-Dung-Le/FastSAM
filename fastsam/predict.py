@@ -63,7 +63,7 @@ class FastSAMPredictor(DetectionPredictor):
         
         # Load trạng thái đã được lưu của mô hình
         model.load_state_dict(torch.load(model_path))
-        print(model)
+        # print(model)
         return model
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
@@ -91,7 +91,7 @@ class FastSAMPredictor(DetectionPredictor):
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
                 cropped = img_test[y1:y2, x1:x2]
-                cropped = cropped.numpy()
+                # cropped = cropped.numpy()
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
 
                 pred = self.predict(cropped)
