@@ -38,7 +38,7 @@ class FastSAMPredictor(DetectionPredictor):
     def predict(self, image):
         # Mở ảnh và áp dụng các biến đổi
         # image = Image.open(image_path).convert("RGB")
-    
+        print("ok")
         input_tensor = self.transform(image)
         # input_tensor = torch.from_numpy(input_tensor)
         print("ok1")
