@@ -42,18 +42,19 @@ class FastSAMPredictor(DetectionPredictor):
         print(type(self.transform))
         try:
             input_tensor = self.transform(image)
+            print("ok1")
+            input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
+            print("ok2")
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            print("ok3")
+            # Chuyển mô hình và dữ liệu lên GPU nếu có sẵn
+            self.model.to(device)
+            print("ok4")
+            input_batch = input_batch.to(device)
         except Exception as e:
             print(e)
         # input_tensor = torch.from_numpy(input_tensor)
-        print("ok1")
-        input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
-        print("ok2")
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("ok3")
-        # Chuyển mô hình và dữ liệu lên GPU nếu có sẵn
-        self.model.to(device)
-        print("ok4")
-        input_batch = input_batch.to(device)
+       
 
         # Dự đoán
         with torch.no_grad():
