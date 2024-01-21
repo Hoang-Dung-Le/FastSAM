@@ -12,7 +12,9 @@ import matplotlib.patches as patches
 from PIL import Image
 import numpy as np
 import os
-
+import torch
+from torchvision import transforms, models
+import torch.nn as nn
 import cv2
 
 
@@ -25,8 +27,44 @@ class FastSAMPredictor(DetectionPredictor):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
-        self.model = CustomResNet34Classifier('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
         print(type(self.model))
+        self.model = self._load_model('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
+        self.transform = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+
+    def predict(self, image):
+        # Mở ảnh và áp dụng các biến đổi
+        # image = Image.open(image_path).convert("RGB")
+        input_tensor = self.transform(image)
+        input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        # Chuyển mô hình và dữ liệu lên GPU nếu có sẵn
+        self.model.to(device)
+        input_batch = input_batch.to(device)
+
+        # Dự đoán
+        with torch.no_grad():
+            self.model.eval()
+            output = self.model(input_batch)
+
+        # Lấy nhãn có xác suất cao nhất
+        _, predicted_class = torch.max(output, 1)
+
+        return predicted_class.item()
+
+    def _load_model(self, model_path, num_classes):
+        # Khởi tạo mô hình ResNet34
+        model = models.resnet34()
+        model.fc = nn.Linear(model.fc.in_features, num_classes)
+        
+        # Load trạng thái đã được lưu của mô hình
+        model.load_state_dict(torch.load(model_path))
+        print(model)
+        return model
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
         p = ops.non_max_suppression(preds[0],
@@ -55,7 +93,7 @@ class FastSAMPredictor(DetectionPredictor):
                 cropped = img_test[y1:y2, x1:x2]
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
                 print(type(self.model))
-                pred = self.model.predict(torch.from_numpy(cropped))
+                pred = self.predict(torch.from_numpy(cropped))
                 print(pred)
 
         except Exception as e:
