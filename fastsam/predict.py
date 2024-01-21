@@ -27,7 +27,7 @@ class FastSAMPredictor(DetectionPredictor):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
-        print(type(self.model))
+        # print(type(self.model))
         self.model = self._load_model('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
@@ -91,6 +91,7 @@ class FastSAMPredictor(DetectionPredictor):
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
                 cropped = img_test[y1:y2, x1:x2]
+                print(type(cropped))
                 # cropped = cropped.numpy()
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
 
