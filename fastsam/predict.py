@@ -38,13 +38,17 @@ class FastSAMPredictor(DetectionPredictor):
     def predict(self, image):
         # Mở ảnh và áp dụng các biến đổi
         # image = Image.open(image_path).convert("RGB")
+    
         input_tensor = self.transform(image)
-        input_tensor = torch.from_numpy(input_tensor)
+        # input_tensor = torch.from_numpy(input_tensor)
+        print("ok1")
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
+        print("ok2")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+        print("ok3")
         # Chuyển mô hình và dữ liệu lên GPU nếu có sẵn
         self.model.to(device)
+        print("ok4")
         input_batch = input_batch.to(device)
 
         # Dự đoán
