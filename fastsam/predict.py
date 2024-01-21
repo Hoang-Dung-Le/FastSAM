@@ -91,8 +91,9 @@ class FastSAMPredictor(DetectionPredictor):
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
                 cropped = img_test[y1:y2, x1:x2]
+                cropped = cropped.numpy()
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                print(type(self.model))
+
                 pred = self.predict(torch.from_numpy(cropped))
                 print(pred)
 
