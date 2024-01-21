@@ -40,7 +40,10 @@ class FastSAMPredictor(DetectionPredictor):
         # image = Image.open(image_path).convert("RGB")
         print("ok")
         print(type(self.transform))
-        input_tensor = self.transform(image)
+        try:
+            input_tensor = self.transform(image)
+        except Exception as e:
+            print(e)
         # input_tensor = torch.from_numpy(input_tensor)
         print("ok1")
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
