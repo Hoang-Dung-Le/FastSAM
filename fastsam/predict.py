@@ -80,7 +80,7 @@ class FastSAMPredictor(DetectionPredictor):
         try:
             img_test = img[0]
             img_test = img_test.cpu().numpy()
-            # print(p[0])
+       
             img_test = np.transpose(img_test, (2, 1, 0))
             for box in p[0]:
                 box = box.cpu().numpy()
@@ -92,10 +92,11 @@ class FastSAMPredictor(DetectionPredictor):
                     continue
                 cropped = img_test[y1:y2, x1:x2]
                 print(type(cropped))
-                # cropped = cropped.numpy()
+              
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-
-                pred = self.predict(cropped)
+                cropped_tensor = torch.from_array(cropped)
+                print(type(cropped_tensor))
+                pred = self.predict(cropped_tensor)
                 print(pred)
 
         except Exception as e:
