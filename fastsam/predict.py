@@ -57,7 +57,7 @@ class FastSAMPredictor(DetectionPredictor):
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
-        output = np.array(output)
+        # output = np.array(output)
         print(output[0].shape)
         # Lấy nhãn có xác suất cao nhất
         if not isinstance(output, torch.Tensor):
