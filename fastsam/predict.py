@@ -57,7 +57,7 @@ class FastSAMPredictor(DetectionPredictor):
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
-        print(output)
+        print(output.shape)
         # Lấy nhãn có xác suất cao nhất
         if not isinstance(output, torch.Tensor):
             output = torch.Tensor(output)
@@ -72,7 +72,7 @@ class FastSAMPredictor(DetectionPredictor):
         
         # Load trạng thái đã được lưu của mô hình
         model.load_state_dict(torch.load(model_path))
-        # print(model)
+        print(model)
         return model
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
