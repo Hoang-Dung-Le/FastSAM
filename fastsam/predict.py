@@ -16,7 +16,7 @@ import torch
 from torchvision import transforms, models
 import torch.nn as nn
 import cv2
-
+from PIL import Image
 
 
 
@@ -38,8 +38,9 @@ class FastSAMPredictor(DetectionPredictor):
     def predict(self, image):
         try:
             print("ok")
-            image = torch.from_numpy(image)
-            image = image.unsqueeze(0)
+            # image = torch.from_numpy(image)
+            image = Image.fromarray(image)
+            # image = image.unsqueeze(0)
             input_tensor = self.transform(image)
             print("ok1")
             # input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
