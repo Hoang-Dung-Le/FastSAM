@@ -36,31 +36,20 @@ class FastSAMPredictor(DetectionPredictor):
         ])
 
     def predict(self, image):
-        
-        print("ok")
         image = image.transpose((2, 0, 1))
         image = torch.from_numpy(image)
-        print(image.shape)
         input_tensor = self.transform(image)
-        print("ok1")
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
-        print("ok2")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("ok3")
-        # Chuyển mô hình và dữ liệu lên GPU nếu có sẵn
         self.model.to(device)
-        print("ok4")
         input_batch = input_batch.to(device)
-     
-
         # Dự đoán
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
-        if not isinstance(output, torch.Tensor):
-            output = torch.Tensor(output)
+       
         _, predicted_class = torch.max(output, 1)
-        return predicted_class
+        return predicted_class.item() 
 
     def _load_model(self, model_path, num_classes):
         # Khởi tạo mô hình ResNet34
@@ -69,7 +58,6 @@ class FastSAMPredictor(DetectionPredictor):
         
         # Load trạng thái đã được lưu của mô hình
         model.load_state_dict(torch.load(model_path))
-        print(model)
         return model
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
