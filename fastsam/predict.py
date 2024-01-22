@@ -31,16 +31,16 @@ class FastSAMPredictor(DetectionPredictor):
         self.model = self._load_model('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
-            transforms.ToTensor(),
+            # transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
     def predict(self, image):
         try:
             print("ok")
-            # image = torch.from_numpy(image)
-            image = Image.fromarray(image*255)
-            # image = image.unsqueeze(0)
+            image = torch.from_numpy(image)
+            # image = Image.fromarray(image*255)
+            image = image.unsqueeze(0)
             input_tensor = self.transform(image)
             print("ok1")
             # input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
