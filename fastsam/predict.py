@@ -88,7 +88,7 @@ class FastSAMPredictor(DetectionPredictor):
                     continue
                 cropped = img_test[y1:y2, x1:x2]
 
-                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                # cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
 
                 # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
                 pred = self.predict(cropped)
