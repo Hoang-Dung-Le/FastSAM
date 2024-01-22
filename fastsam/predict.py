@@ -59,9 +59,11 @@ class FastSAMPredictor(DetectionPredictor):
             output = self.model(input_batch)
 
         # Lấy nhãn có xác suất cao nhất
-        _, predicted_class = torch.max(output, 1)
+        if not isinstance(output, torch.Tensor):
+            output = torch.Tensor(output)
 
-        return predicted_class.item()
+        # Lấy nhãn có xác suất cao nhất
+        _, predicted_class = torch.max(output, 1)
 
     def _load_model(self, model_path, num_classes):
         # Khởi tạo mô hình ResNet34
