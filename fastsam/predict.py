@@ -48,11 +48,8 @@ class FastSAMPredictor(DetectionPredictor):
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
-            for out in output:
-                print(out.shape)
-        
         _, predicted_class = torch.max(output, 1)
-        return predicted_class.item() 
+        return predicted_class.item()
 
     def _load_model(self, model_path, num_classes):
         # Khởi tạo mô hình ResNet34
