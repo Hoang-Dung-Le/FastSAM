@@ -28,6 +28,8 @@ class FastSAMPredictor(DetectionPredictor):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
         # print(type(self.model))
+        
+    def predict(self, image):
         self.model = self._load_model('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
@@ -35,7 +37,6 @@ class FastSAMPredictor(DetectionPredictor):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
-    def predict(self, image):
         image = image.transpose((2, 0, 1))
         image = torch.from_numpy(image)
         input_tensor = self.transform(image)
