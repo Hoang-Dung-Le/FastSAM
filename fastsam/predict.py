@@ -44,11 +44,12 @@ class FastSAMPredictor(DetectionPredictor):
         self.model.to(device)
         input_batch = input_batch.to(device)
         # Dự đoán
+    
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
        
-        _, predicted_class = torch.max(output, 1)
+        _, predicted_class = torch.max(output.data, 1)
         return predicted_class.item() 
 
     def _load_model(self, model_path, num_classes):
