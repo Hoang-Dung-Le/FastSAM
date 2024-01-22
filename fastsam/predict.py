@@ -101,8 +101,7 @@ class FastSAMPredictor(DetectionPredictor):
 
         except Exception as e:
             print(e)
-        
-        print("lksdlf")
+        print("ok")
         results = []
         if len(p) == 0 or len(p[0]) == 0:
             print("No object detected.")
