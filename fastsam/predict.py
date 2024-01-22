@@ -38,9 +38,10 @@ class FastSAMPredictor(DetectionPredictor):
     def predict(self, image):
         try:
             print("ok")
+            input_tensor = input_tensor.unsqueeze(0) 
             input_tensor = self.transform(torch.from_numpy(image))
             print("ok1")
-            input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
+            # input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
             print("ok2")
             # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             print("ok3")
