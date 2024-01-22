@@ -38,6 +38,7 @@ class FastSAMPredictor(DetectionPredictor):
     def predict(self, image):
         try:
             print("ok")
+            image = image.transpose((2, 0, 1))
             image = torch.from_numpy(image)
             print(image.shape)
             input_tensor = self.transform(image)
