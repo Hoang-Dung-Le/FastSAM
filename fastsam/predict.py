@@ -38,7 +38,7 @@ class FastSAMPredictor(DetectionPredictor):
     def predict(self, image):
         try:
             print("ok")
-            input_tensor = self.transform(image)
+            input_tensor = self.transform(torch.from_numpy(image))
             print("ok1")
             input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
             print("ok2")
