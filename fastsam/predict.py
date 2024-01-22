@@ -95,6 +95,7 @@ class FastSAMPredictor(DetectionPredictor):
                 print(pred)
                 if pred != 1:  # Keep the box only if the prediction is not 0
                     new_p.append(box)
+                    print("ok")
 
             p[0] = new_p  # Update the original list with the filtered boxes
 
