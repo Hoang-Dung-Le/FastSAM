@@ -92,7 +92,7 @@ class FastSAMPredictor(DetectionPredictor):
 
                 # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
                 pred = self.predict(cropped)
-
+                print(pred)
                 if pred != 1:  # Keep the box only if the prediction is not 0
                     new_p.append(box)
 
