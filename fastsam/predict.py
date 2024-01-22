@@ -39,7 +39,7 @@ class FastSAMPredictor(DetectionPredictor):
         try:
             print("ok")
             # image = torch.from_numpy(image)
-            image = Image.fromarray(image)
+            image = Image.fromarray(image*255)
             # image = image.unsqueeze(0)
             input_tensor = self.transform(image)
             print("ok1")
