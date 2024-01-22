@@ -88,7 +88,6 @@ class FastSAMPredictor(DetectionPredictor):
                     print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
                     continue
                 cropped = img_test[y1:y2, x1:x2]
-                print(type(cropped))
               
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
                 
