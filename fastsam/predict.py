@@ -148,7 +148,9 @@ class FastSAMPredictor(DetectionPredictor):
 
                             cropped_img = orig_img[y1:y2, x1:x2]
 
-                            cv2.imwrite(f"/content/{x1}.png", cropped_img)
+                            print(cropped_img.shape)
+
+                            # cv2.imwrite(f"/content/{x1}.png", cropped_img)
                     except Exception as e:
                         print(e)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
