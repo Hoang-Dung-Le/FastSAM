@@ -38,14 +38,16 @@ class FastSAMPredictor(DetectionPredictor):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
-        print(image.shape)
+        
 
         image = image.transpose((2, 0, 1))
+        print(image.shape)
         image = torch.from_numpy(image)
         print("ok1")
         input_tensor = self.transform(image)
         print("ok2")
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
+        print("ok3")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # print(self.model)
         self.model.to(device)
