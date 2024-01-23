@@ -76,9 +76,10 @@ class FastSAMPredictor(DetectionPredictor):
             img_test = img[0]  # Assuming img is defined elsewhere in your code
             img_test = img_test.cpu().numpy()
 
-            cv2.imwrite("/content/anhgoc.png", img_test*255)
+            
 
             img_test = np.transpose(img_test, (2, 1, 0))
+            cv2.imwrite("/content/anhgoc.png", img_test*255)
             new_p = []  # Create an empty list to store the filtered bounding boxes
             for box in p[0]:
                 box = box.cpu().numpy()
