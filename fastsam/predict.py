@@ -125,8 +125,11 @@ class FastSAMPredictor(DetectionPredictor):
                             print(e)
                 
                 # Gán lại danh sách box đã lọc    
-                pred = np.array(kept_boxes)
-                print(pred.shape)
+                try:
+                    pred = np.array(kept_boxes)
+                    print(pred.shape)
+                except Exception as e:
+                    print(e)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
