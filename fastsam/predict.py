@@ -106,7 +106,8 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 try:
                     for i in range(pred.shape[0]):
-                        box_np = pred[i].detach().cpu().numpy()
+                        pr = pred[i]
+                        box_np = pr.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         
                         cropped_img = orig_img[y1:y2, x1:x2]
@@ -114,7 +115,7 @@ class FastSAMPredictor(DetectionPredictor):
                         
                         prediction = self.predict(cropped_img)
                         if prediction == 1:
-                            item = item.cuda()  
+                            pr = pr.cuda()  
                             kept_boxes = torch.cat([kept_boxes, pred[i].unsqueeze(0)])
 
                 except Exception as e:
