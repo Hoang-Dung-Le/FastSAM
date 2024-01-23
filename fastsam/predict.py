@@ -105,18 +105,19 @@ class FastSAMPredictor(DetectionPredictor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
                 
-                #     for item in pred:
-                #         box_np = item.detach().cpu().numpy()
-                #         x1, y1, x2, y2 = box_np[:4].astype(int)
+                    for item in pred:
+                        print(item.shape)
+                        box_np = item.detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
                         
-                #         cropped_img = orig_img[y1:y2, x1:x2]
-                #         cropped_img = cropped_img / 255.
+                        cropped_img = orig_img[y1:y2, x1:x2]
+                        cropped_img = cropped_img / 255.
                         
-                #         pred = self.predict(cropped_img)
-                #         if pred == 1:  
-                #             kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
+                        pred = self.predict(cropped_img)
+                        if pred == 1:  
+                            kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
             
-                # pred = kept_boxes
+                pred = kept_boxes
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
