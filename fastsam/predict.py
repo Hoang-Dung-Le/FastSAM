@@ -76,7 +76,7 @@ class FastSAMPredictor(DetectionPredictor):
             img_test = img[0]  # Assuming img is defined elsewhere in your code
             img_test = img_test.cpu().numpy()
 
-            cv2.imwrite("/content/anhgoc.jpg", img_test*255)
+            cv2.imwrite("/content/anhgoc.png", img_test*255)
 
             img_test = np.transpose(img_test, (2, 1, 0))
             new_p = []  # Create an empty list to store the filtered bounding boxes
@@ -133,7 +133,7 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
-                    print(pred)
+                    # print(pred)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
