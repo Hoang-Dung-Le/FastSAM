@@ -104,18 +104,21 @@ class FastSAMPredictor(DetectionPredictor):
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
-                
-                for i in range(pred.shape[0]):
-                    box_np = pred[i].detach().cpu().numpy()
-                    x1, y1, x2, y2 = box_np[:4].astype(int)
-                    
-                    cropped_img = orig_img[y1:y2, x1:x2]
-                    cropped_img = cropped_img / 255.
-                    
-                    prediction = self.predict(cropped_img)
-                    if prediction == 1:
-                        item = item.cuda()  
-                        kept_boxes = torch.cat([kept_boxes, pred[i].unsqueeze(0)])
+                try:
+                    for i in range(pred.shape[0]):
+                        box_np = pred[i].detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
+                        
+                        cropped_img = orig_img[y1:y2, x1:x2]
+                        cropped_img = cropped_img / 255.
+                        
+                        prediction = self.predict(cropped_img)
+                        if prediction == 1:
+                            item = item.cuda()  
+                            kept_boxes = torch.cat([kept_boxes, pred[i].unsqueeze(0)])
+
+                except Exception as e:
+                    print(e)
 
                 print("ok")
                 try:
