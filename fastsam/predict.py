@@ -99,7 +99,7 @@ class FastSAMPredictor(DetectionPredictor):
                 results.append(Results(orig_img=orig_img, path=img_path, names=self.model.names, boxes=pred[:, :6]))
                 continue
             if self.args.retina_masks:
-                print(type(pred))
+                print(pred.shape)
                 kept_boxes = torch.tensor([])
                 kept_boxes = kept_boxes.cuda()
                 if not isinstance(orig_imgs, torch.Tensor):
