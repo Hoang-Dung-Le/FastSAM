@@ -103,25 +103,25 @@ class FastSAMPredictor(DetectionPredictor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
                 # Tạo list để lưu các box giữ lại 
-                kept_boxes = []
+                    kept_boxes = []
 
-                try:
-                    for item in pred:
-                        box_np = item.detach().cpu().numpy()
-                        x1, y1, x2, y2 = box_np[:4].astype(int)
+                    try:
+                        for item in pred:
+                            box_np = item.detach().cpu().numpy()
+                            x1, y1, x2, y2 = box_np[:4].astype(int)
+                            
+                            cropped_img = orig_img[y1:y2, x1:x2]
+                            cropped_img = cropped_img / 255.
+                            
+                            pred = self.predict(cropped_img)
+                            print(pred)
+                            
+                            # Nếu pred == 1 thì giữ lại box
+                            if pred == 1:  
+                                kept_boxes.append(item)
                         
-                        cropped_img = orig_img[y1:y2, x1:x2]
-                        cropped_img = cropped_img / 255.
-                        
-                        pred = self.predict(cropped_img)
-                        print(pred)
-                        
-                        # Nếu pred == 1 thì giữ lại box
-                        if pred == 1:  
-                            kept_boxes.append(item)
-                    
-                except Exception as e:
-                        print(e)
+                    except Exception as e:
+                            print(e)
                 
                 # Gán lại danh sách box đã lọc    
                 pred = kept_boxes
