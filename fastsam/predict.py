@@ -128,6 +128,7 @@ class FastSAMPredictor(DetectionPredictor):
                 try:
                     # pred = np.array(kept_boxes)
                     pred = kept_boxes
+                    pred = torch.Tensor(pred)
                     print(pred.shape)
                 except Exception as e:
                     print(e)
