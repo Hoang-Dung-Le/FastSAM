@@ -113,19 +113,17 @@ class FastSAMPredictor(DetectionPredictor):
                         
                         cropped_img = orig_img[y1:y2, x1:x2]
                         cropped_img = cropped_img / 255.
-                        print("ok")
                         prediction = self.predict(cropped_img)
-                        print("oksdf")
+
                         if prediction == 1:
                             # pr = pr.cuda()  
-                            print("okne")
                             kept_boxes = torch.cat([kept_boxes, pred[i].unsqueeze(0)])
 
                 except Exception as e:
+                    print("e1")
                     print(e)
-
-                print("ok hi hi")
                 try:
+                    print(pred.shape)
                     masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
                 except Exception as e:
                     print(e)
