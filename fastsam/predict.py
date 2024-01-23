@@ -38,9 +38,13 @@ class FastSAMPredictor(DetectionPredictor):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
 
+        print(image.shape)
+
         image = image.transpose((2, 0, 1))
         image = torch.from_numpy(image)
+        print("ok1")
         input_tensor = self.transform(image)
+        print("ok2")
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # print(self.model)
@@ -72,38 +76,6 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         
-        # try:
-        #     img_test = img[0]  # Assuming img is defined elsewhere in your code
-        #     img_test = img_test.cpu().numpy()
-
-            
-
-        #     img_test = np.transpose(img_test, (2, 1, 0))
-        #     cv2.imwrite("/content/anhgoc.png", img_test*255)
-        #     new_p = []  # Create an empty list to store the filtered bounding boxes
-        #     for box in p[0]:
-        #         box = box.cpu().numpy()
-        #         x1, y1, x2, y2 = box[:4].astype(int)
-
-        #         if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-        #             print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-        #             continue
-        #         cropped = img_test[y1:y2, x1:x2]
-
-        #         cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-        #         cv2.imwrite(f"/content/{x1}.png", cropped * 255)
-
-                # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
-            #     pred = self.predict(cropped)
-            #     print(pred)
-            #     if pred != 1:  # Keep the box only if the prediction is not 0
-            #         new_p.append(box)
-            #         print("ok")
-
-            # p[0] = new_p  # Update the original list with the filtered boxes
-
-        # except Exception as e:
-        #     print(e)
         results = []
         if len(p) == 0 or len(p[0]) == 0:
             print("No object detected.")
@@ -134,8 +106,6 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
-                    print(pred.shape)
-                    print(orig_img.shape)
                     try:
 
                         for item in pred:
