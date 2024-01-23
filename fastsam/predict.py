@@ -132,14 +132,14 @@ class FastSAMPredictor(DetectionPredictor):
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
                 cv2.imwrite(f"/content/{x1}.png", cropped * 255)
 
-                cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
-                pred = self.predict(cropped)
-                print(pred)
-                if pred != 1:  # Keep the box only if the prediction is not 0
-                    new_p.append(box)
-                    print("ok")
+                # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
+            #     pred = self.predict(cropped)
+            #     print(pred)
+            #     if pred != 1:  # Keep the box only if the prediction is not 0
+            #         new_p.append(box)
+            #         print("ok")
 
-            p[0] = new_p  # Update the original list with the filtered boxes
+            # p[0] = new_p  # Update the original list with the filtered boxes
 
         except Exception as e:
             print(e)
