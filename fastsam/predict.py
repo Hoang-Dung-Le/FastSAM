@@ -104,8 +104,8 @@ class FastSAMPredictor(DetectionPredictor):
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
-                print(pred.shape)
-                for idx in range(pred.shape[0]):
+                test = torch.clone(pred)
+                for idx in range(test.shape[0]):
                     pr = pred[idx]
                     box_np = pr.detach().cpu().numpy()
                     x1, y1, x2, y2 = box_np[:4].astype(int)
@@ -116,7 +116,7 @@ class FastSAMPredictor(DetectionPredictor):
 
                     if prediction == 1:
                         # pr = pr.cuda()  
-                        kept_boxes = torch.cat([kept_boxes, pred[idx].unsqueeze(0)])
+                        kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
 
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
