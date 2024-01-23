@@ -126,7 +126,8 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 # Gán lại danh sách box đã lọc    
                 try:
-                    pred = np.array(kept_boxes)
+                    # pred = np.array(kept_boxes)
+                    pred = kept_boxes
                     print(pred.shape)
                 except Exception as e:
                     print(e)
