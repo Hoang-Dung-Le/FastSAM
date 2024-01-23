@@ -135,10 +135,11 @@ class FastSAMPredictor(DetectionPredictor):
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                     print(pred.shape)
+                    print(orig_img.shape)
                     try:
 
                         for item in pred:
-                            print(item)
+                            print(item.shape)
                             x1, y1, x2, y2 = item[:4]
                             cropped_img = orig_img[y1:y2, x1:x2]
                             print(cropped_img.shape)
