@@ -73,59 +73,36 @@ class FastSAMPredictor(DetectionPredictor):
                                     classes=self.args.classes)
 
 
+        
         try:
-            bboxes = p[0][:, :4]  
-            confidences = p[0][:, 4]
-            class_ids = p[0][:, 5]
+            img_test = img[0]  # Assuming img is defined elsewhere in your code
+            img_test = img_test.cpu().numpy()
 
-            # Lấy ra ảnh gốc từ orig_imgs
-            orig_img = orig_imgs[0]
+            img_test = np.transpose(img_test, (2, 1, 0))
+            new_p = []  # Create an empty list to store the filtered bounding boxes
+            for box in p[0]:
+                box = box.cpu().numpy()
+                x1, y1, x2, y2 = box[:4].astype(int)
 
-            # Vẽ bboxes cho ảnh đầu tiên
-            for i in range(len(bboxes)):
+                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
+                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+                    continue
+                cropped = img_test[y1:y2, x1:x2]
 
-                x1, y1, x2, y2 = bboxes[i]
-                id = class_ids[i]
-                conf = confidences[i]
+                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(f"/content/{x1}.png", cropped)
 
-                # Vẽ bounding box
-                cv2.rectangle(orig_img, (x1, y1), (x2, y2), (0,255,0), 2)
+                # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
+                # pred = self.predict(cropped)
+                # print(pred)
+                # if pred != 1:  # Keep the box only if the prediction is not 0
+                #     new_p.append(box)
+                #     print("ok")
 
-                # Viết class ID và confidence 
-                text = f'{id}: {conf:.2f}'
-                cv2.putText(orig_img, text, (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
-                cv2.imwrite("/content/anh.png", orig_img)
+            # p[0] = new_p  # Update the original list with the filtered boxes
 
-        except Exception as  e:
+        except Exception as e:
             print(e)
-        # try:
-        #     img_test = img[0]  # Assuming img is defined elsewhere in your code
-        #     img_test = img_test.cpu().numpy()
-
-        #     img_test = np.transpose(img_test, (2, 1, 0))
-        #     new_p = []  # Create an empty list to store the filtered bounding boxes
-        #     for box in p[0]:
-        #         box = box.cpu().numpy()
-        #         x1, y1, x2, y2 = box[:4].astype(int)
-
-        #         if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-        #             print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-        #             continue
-        #         cropped = img_test[y1:y2, x1:x2]
-
-        #         # cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-
-        #         # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
-        #         pred = self.predict(cropped)
-        #         print(pred)
-        #         if pred != 1:  # Keep the box only if the prediction is not 0
-        #             new_p.append(box)
-        #             print("ok")
-
-        #     p[0] = new_p  # Update the original list with the filtered boxes
-
-        # except Exception as e:
-        #     print(e)
         results = []
         if len(p) == 0 or len(p[0]) == 0:
             print("No object detected.")
