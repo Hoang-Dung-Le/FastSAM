@@ -94,7 +94,7 @@ class FastSAMPredictor(DetectionPredictor):
             # Viết class ID và confidence 
             text = f'{id}: {conf:.2f}'
             cv2.putText(orig_img, text, (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
-        cv2_imshow(orig_img)
+            cv2.imwrite("/content/anh.png", orig_img)
         # try:
         #     img_test = img[0]  # Assuming img is defined elsewhere in your code
         #     img_test = img_test.cpu().numpy()
