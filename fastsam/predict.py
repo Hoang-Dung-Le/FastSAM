@@ -118,6 +118,9 @@ class FastSAMPredictor(DetectionPredictor):
                             kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
             
                 try:
+                    print(type(proto))
+                    print(type(pred))
+                    print(type(orig_img))
                     masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
                 except Exception as e:
                     print(e)
