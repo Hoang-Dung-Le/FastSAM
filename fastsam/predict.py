@@ -130,7 +130,7 @@ class FastSAMPredictor(DetectionPredictor):
                 cropped = img_test[y1:y2, x1:x2]
 
                 cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                cv2.imwrite(f"/content/{x1}.png", cropped * 255)
+                cv2.imwrite(f"/content/sdf.png", cropped * 255)
 
                 # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
             #     pred = self.predict(cropped)
@@ -144,7 +144,7 @@ class FastSAMPredictor(DetectionPredictor):
         except Exception as e:
             print(e)
         critical_iou_index = bbox_iou(full_box[0][:4], p[0][:, :4], iou_thres=0.9, image_shape=img.shape[2:])
-        print(critical_iou_index)
+        # print(critical_iou_index)
     
         if critical_iou_index.numel() != 0:
             print('da vaog')
