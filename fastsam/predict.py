@@ -118,6 +118,7 @@ class FastSAMPredictor(DetectionPredictor):
                         print("oksdf")
                         if prediction == 1:
                             # pr = pr.cuda()  
+                            print("okne")
                             kept_boxes = torch.cat([kept_boxes, pred[i].unsqueeze(0)])
 
                 except Exception as e:
