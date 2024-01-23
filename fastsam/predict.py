@@ -76,7 +76,7 @@ class FastSAMPredictor(DetectionPredictor):
         try:
             bboxes = p[0][:, :4]  
             confidences = p[0][:, 4]
-            class_ids = p[0][:, 5].astype(int)
+            class_ids = p[0][:, 5]
 
             # Lấy ra ảnh gốc từ orig_imgs
             orig_img = orig_imgs[0]
