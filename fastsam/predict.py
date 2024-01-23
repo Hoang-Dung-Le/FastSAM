@@ -72,26 +72,26 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         
-        try:
-            img_test = img[0]  # Assuming img is defined elsewhere in your code
-            img_test = img_test.cpu().numpy()
+        # try:
+        #     img_test = img[0]  # Assuming img is defined elsewhere in your code
+        #     img_test = img_test.cpu().numpy()
 
             
 
-            img_test = np.transpose(img_test, (2, 1, 0))
-            cv2.imwrite("/content/anhgoc.png", img_test*255)
-            new_p = []  # Create an empty list to store the filtered bounding boxes
-            for box in p[0]:
-                box = box.cpu().numpy()
-                x1, y1, x2, y2 = box[:4].astype(int)
+        #     img_test = np.transpose(img_test, (2, 1, 0))
+        #     cv2.imwrite("/content/anhgoc.png", img_test*255)
+        #     new_p = []  # Create an empty list to store the filtered bounding boxes
+        #     for box in p[0]:
+        #         box = box.cpu().numpy()
+        #         x1, y1, x2, y2 = box[:4].astype(int)
 
-                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-                    continue
-                cropped = img_test[y1:y2, x1:x2]
+        #         if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
+        #             print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+        #             continue
+        #         cropped = img_test[y1:y2, x1:x2]
 
-                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
-                cv2.imwrite(f"/content/{x1}.png", cropped * 255)
+        #         cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+        #         cv2.imwrite(f"/content/{x1}.png", cropped * 255)
 
                 # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
             #     pred = self.predict(cropped)
@@ -102,8 +102,8 @@ class FastSAMPredictor(DetectionPredictor):
 
             # p[0] = new_p  # Update the original list with the filtered boxes
 
-        except Exception as e:
-            print(e)
+        # except Exception as e:
+        #     print(e)
         results = []
         if len(p) == 0 or len(p[0]) == 0:
             print("No object detected.")
@@ -134,7 +134,7 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
-                    # print(pred)
+                    print(pred.shape)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
