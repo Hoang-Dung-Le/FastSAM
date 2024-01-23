@@ -140,9 +140,9 @@ class FastSAMPredictor(DetectionPredictor):
 
                         for item in pred:
                             print(item.shape)
-                            x1, y1, x2, y2 = item[:4]
+                            x1, y1, x2, y2 = item[:4].astype(int) 
                             cropped_img = orig_img[y1:y2, x1:x2]
-                            # print(cropped_img.shape)
+                            print(cropped_img.shape)
                     except Exception as e:
                         print(e)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
