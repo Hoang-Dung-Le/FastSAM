@@ -144,7 +144,7 @@ class FastSAMPredictor(DetectionPredictor):
                             x1, y1, x2, y2 = box_np[:4].astype(int)
 
                             cropped_img = orig_img[y1:y2, x1:x2]
-
+                            cropped_img = cropped_img / 255.
                             pred = self.predict(cropped_img)
                             print(pred)
                     except Exception as e:
