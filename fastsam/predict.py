@@ -71,37 +71,37 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
         
-
+        for box in p:
+            print(box.shape)
         
-        try:
-            img_test = img[0]  # Assuming img is defined elsewhere in your code
-            img_test = img_test.cpu().numpy()
+        # try:
+        #     img_test = img[0]  # Assuming img is defined elsewhere in your code
+        #     img_test = img_test.cpu().numpy()
 
-            img_test = np.transpose(img_test, (2, 1, 0))
-            new_p = []  # Create an empty list to store the filtered bounding boxes
-            for box in p[0]:
-                box = box.cpu().numpy()
-                x1, y1, x2, y2 = box[:4].astype(int)
+        #     img_test = np.transpose(img_test, (2, 1, 0))
+        #     new_p = []  # Create an empty list to store the filtered bounding boxes
+        #     for box in p[0]:
+        #         box = box.cpu().numpy()
+        #         x1, y1, x2, y2 = box[:4].astype(int)
 
-                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-                    continue
-                cropped = img_test[y1:y2, x1:x2]
+        #         if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
+        #             print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+        #             continue
+        #         cropped = img_test[y1:y2, x1:x2]
 
-                # cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+        #         # cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
 
-                # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
-                pred = self.predict(cropped)
-                print(pred)
-                if pred != 1:  # Keep the box only if the prediction is not 0
-                    new_p.append(box)
-                    print("ok")
+        #         # cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
+        #         pred = self.predict(cropped)
+        #         print(pred)
+        #         if pred != 1:  # Keep the box only if the prediction is not 0
+        #             new_p.append(box)
+        #             print("ok")
 
-            p[0] = new_p  # Update the original list with the filtered boxes
+        #     p[0] = new_p  # Update the original list with the filtered boxes
 
-        except Exception as e:
-            print(e)
-        print("ok")
+        # except Exception as e:
+        #     print(e)
         results = []
         if len(p) == 0 or len(p[0]) == 0:
             print("No object detected.")
@@ -118,43 +118,6 @@ class FastSAMPredictor(DetectionPredictor):
             full_box[0][4] = p[0][critical_iou_index][:,4]
             full_box[0][6:] = p[0][critical_iou_index][:,6:]
             p[0][critical_iou_index] = full_box
-        
-
-        # try:
-
-        #     img_test = img[0]
-        #     img_test = img_test.cpu().numpy()
-
-        #     box = p[0][critical_iou_index]
-        #     print(box)
-        #     box = box.squeeze()
-        #     box = box.cpu().numpy()
-        #     print(box.shape)
-        #     x1, y1, x2, y2 = box[:4].astype(int)
-        #     cropped = img_test[y1:y2, x1:x2]
-        #     cv2.imwrite(f'/content/{2}.jpg', cropped * 255)
-        #     # p1 = [tensor.cpu().numpy() for tensor in p]
-        #     # cropped_imgs = [] 
-
-        #     # img_test = img[0]
-        #     # img_test = img_test.cpu().numpy()
-        #     # print(p[0])
-        #     # img_test = np.transpose(img_test, (2, 1, 0))
-        #     # for box in p[0]:
-        #     #     box = box.cpu().numpy()
-        #     #     x1, y1, x2, y2 = box[:4].astype(int)  # Đảm bảo thứ tự tọa độ chính xác
-
-        #     #     # Cắt ảnh từ box
-        #     #     if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
-        #     #         print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
-        #     #         continue
-        #     #     cropped = img_test[y1:y2, x1:x2]
-        #     #     cropped = cropped
-        #     #     cv2.imwrite(f'/content/{x1}.jpg', cropped * 255)
-        #         # plt.imshow(cropped)
-
-        # except Exception as e:
-        #     print(e)
         proto = preds[1][-1] if len(preds[1]) == 3 else preds[1]  # second output is len 3 if pt, but only 1 if exported
         
 
