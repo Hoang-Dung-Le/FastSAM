@@ -90,7 +90,7 @@ class FastSAMPredictor(DetectionPredictor):
             p[0][critical_iou_index] = full_box
         proto = preds[1][-1] if len(preds[1]) == 3 else preds[1]  # second output is len 3 if pt, but only 1 if exported
         
-        print(proto.shape)
+        # print(proto.shape)
         for i, pred in enumerate(p):
             orig_img = orig_imgs[i] if isinstance(orig_imgs, list) else orig_imgs
             path = self.batch[0]
@@ -106,6 +106,7 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 
                     for item in pred:
+                        print("oksdf")
                         print(item.shape)
                         box_np = item.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
