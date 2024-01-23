@@ -141,8 +141,7 @@ class FastSAMPredictor(DetectionPredictor):
                         for item in pred:
                             print(item.shape)
                             x1, y1, x2, y2 = item[:4]
-                            print(x1, x2, y1, y2)
-                            # cropped_img = orig_img[y1:y2, x1:x2]
+                            cropped_img = orig_img[y1:y2, x1:x2]
                             # print(cropped_img.shape)
                     except Exception as e:
                         print(e)
