@@ -105,6 +105,7 @@ class FastSAMPredictor(DetectionPredictor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
                 try:
+                    print(pred.shape)
                     for i in range(pred.shape[0]):
                         pr = pred[i]
                         box_np = pr.detach().cpu().numpy()
