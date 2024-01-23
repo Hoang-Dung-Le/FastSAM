@@ -106,7 +106,7 @@ class FastSAMPredictor(DetectionPredictor):
                 try:
                     test = torch.clone(pred)
                     for idx in range(test.shape[0]):
-                        pr = pred[idx]
+                        pr = test[idx]
                         box_np = pr.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         
