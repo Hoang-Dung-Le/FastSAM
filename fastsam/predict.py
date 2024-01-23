@@ -120,7 +120,7 @@ class FastSAMPredictor(DetectionPredictor):
 
             img_test = np.transpose(img_test, (2, 1, 0))
             new_p = []  # Create an empty list to store the filtered bounding boxes
-            for box in full_box[0]:
+            for box in full_box:
                 box = box.cpu().numpy()
                 x1, y1, x2, y2 = box[:4].astype(int)
 
