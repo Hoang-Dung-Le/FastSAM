@@ -144,7 +144,7 @@ class FastSAMPredictor(DetectionPredictor):
         except Exception as e:
             print(e)
         critical_iou_index = bbox_iou(full_box[0][:4], p[0][:, :4], iou_thres=0.9, image_shape=img.shape[2:])
-        # print(critical_iou_index)
+        print(critical_iou_index)
     
         if critical_iou_index.numel() != 0:
             print('da vaog')
@@ -164,6 +164,7 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
+                    print(pred)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
