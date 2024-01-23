@@ -111,7 +111,38 @@ class FastSAMPredictor(DetectionPredictor):
         full_box = torch.zeros_like(p[0][0])
         full_box[2], full_box[3], full_box[4], full_box[6:] = img.shape[3], img.shape[2], 1.0, 1.0
         full_box = full_box.view(1, -1)
-        print(full_box.shape)
+        # print(full_box.shape)
+
+
+        try:
+            img_test = img[0]  # Assuming img is defined elsewhere in your code
+            img_test = img_test.cpu().numpy()
+
+            img_test = np.transpose(img_test, (2, 1, 0))
+            new_p = []  # Create an empty list to store the filtered bounding boxes
+            for box in full_box[0]:
+                box = box.cpu().numpy()
+                x1, y1, x2, y2 = box[:4].astype(int)
+
+                if x1 < 0 or y1 < 0 or x2 > img_test.shape[1] or y2 > img_test.shape[0]:
+                    print("Xoá bounding box vì tọa độ nằm ngoài ảnh")
+                    continue
+                cropped = img_test[y1:y2, x1:x2]
+
+                cropped = cv2.cvtColor(cropped, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(f"/content/{x1}.png", cropped * 255)
+
+                cropped = torch.from_numpy(cropped)  # Uncomment if needed for prediction
+                pred = self.predict(cropped)
+                print(pred)
+                if pred != 1:  # Keep the box only if the prediction is not 0
+                    new_p.append(box)
+                    print("ok")
+
+            p[0] = new_p  # Update the original list with the filtered boxes
+
+        except Exception as e:
+            print(e)
         critical_iou_index = bbox_iou(full_box[0][:4], p[0][:, :4], iou_thres=0.9, image_shape=img.shape[2:])
         # print(critical_iou_index)
     
