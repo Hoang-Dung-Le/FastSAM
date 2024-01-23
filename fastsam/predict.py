@@ -118,6 +118,7 @@ class FastSAMPredictor(DetectionPredictor):
                             kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
             
                 try:
+                    print(pred.shape)
                     print(type(proto))
                     print(type(pred))
                     print(type(orig_img))
