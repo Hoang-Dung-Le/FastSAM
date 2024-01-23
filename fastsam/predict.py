@@ -101,6 +101,7 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 print(type(pred))
                 kept_boxes = torch.tensor([])
+                kept_boxes = kept_boxes.cuda()
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
