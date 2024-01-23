@@ -109,6 +109,7 @@ class FastSAMPredictor(DetectionPredictor):
                     for i in range(pred.shape[0]):
                         pr = pred[i]
                         box_np = pr.detach().cpu().numpy()
+                        print(len(box_np))
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         
                         cropped_img = orig_img[y1:y2, x1:x2]
