@@ -146,7 +146,9 @@ class FastSAMPredictor(DetectionPredictor):
                             # Hoặc làm tròn rồi convert sang int
                             y1, y2, x1, x2 = np.round(box_np[:4]).astype(int) 
 
-                            cropped_img = img[y1:y2, x1:x2]
+                            cropped_img = orig_img[y1:y2, x1:x2]
+
+                            cv2.imwrite(f"/content/img{x1}.png", cropped_img)
                     except Exception as e:
                         print(e)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
