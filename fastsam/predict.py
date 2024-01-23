@@ -41,22 +41,13 @@ class FastSAMPredictor(DetectionPredictor):
         
 
         image = image.transpose((2, 0, 1))
-        print(image.shape)
         image = torch.from_numpy(image)
-        print("ok1")
         input_tensor = self.transform(image)
-        print("ok2")
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
-        print("ok3")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print("ok4")
-        # print(self.model)
         self.model.to(device)
-        print("ok5")
         input_batch = input_batch.to(device)
         input_batch = input_batch.float()
-        # Dự đoán
-        print("ok6")
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
@@ -94,7 +85,6 @@ class FastSAMPredictor(DetectionPredictor):
         # print(critical_iou_index)
     
         if critical_iou_index.numel() != 0:
-            print('da vaog')
             full_box[0][4] = p[0][critical_iou_index][:,4]
             full_box[0][6:] = p[0][critical_iou_index][:,6:]
             p[0][critical_iou_index] = full_box
@@ -111,19 +101,31 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
-                    try:
+                
+                # Tạo list để lưu các box giữ lại 
+                kept_boxes = []
 
-                        for item in pred:
-                            box_np = item.detach().cpu().numpy()
-
-                            x1, y1, x2, y2 = box_np[:4].astype(int)
-
-                            cropped_img = orig_img[y1:y2, x1:x2]
-                            cropped_img = cropped_img / 255.
-                            pred = self.predict(cropped_img)
-                            print(pred)
-                    except Exception as e:
+                try:
+                    for item in pred:
+                        box_np = item.detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
+                        
+                        cropped_img = orig_img[y1:y2, x1:x2]
+                        cropped_img = cropped_img / 255.
+                        
+                        pred = self.predict(cropped_img)
+                        print(pred)
+                        
+                        # Nếu pred == 1 thì giữ lại box
+                        if pred == 1:  
+                            kept_boxes.append(item)
+                    
+                except Exception as e:
                         print(e)
+                
+                # Gán lại danh sách box đã lọc    
+                pred = kept_boxes
+                
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
