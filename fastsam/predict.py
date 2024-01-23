@@ -99,11 +99,12 @@ class FastSAMPredictor(DetectionPredictor):
                 results.append(Results(orig_img=orig_img, path=img_path, names=self.model.names, boxes=pred[:, :6]))
                 continue
             if self.args.retina_masks:
+                kept_boxes = []
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
                 # Tạo list để lưu các box giữ lại 
-                    kept_boxes = []
+                    
 
                     try:
                         for item in pred:
@@ -114,7 +115,7 @@ class FastSAMPredictor(DetectionPredictor):
                             cropped_img = cropped_img / 255.
                             
                             pred = self.predict(cropped_img)
-                            print(pred)
+            
                             
                             # Nếu pred == 1 thì giữ lại box
                             if pred == 1:  
