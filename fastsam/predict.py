@@ -17,6 +17,7 @@ from torchvision import transforms, models
 import torch.nn as nn
 import cv2
 from PIL import Image
+from google.colab.patches import cv2_imshow
 
 
 
@@ -70,9 +71,30 @@ class FastSAMPredictor(DetectionPredictor):
                                     max_det=self.args.max_det,
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
-        
-        print(len(p))
-        
+
+
+        # Lấy ra bboxes, confidences, class_id cho ảnh đầu tiên 
+        bboxes = p[0][:, :4]  
+        confidences = p[0][:, 4]
+        class_ids = p[0][:, 5].astype(int)
+
+        # Lấy ra ảnh gốc từ orig_imgs
+        orig_img = orig_imgs[0]
+
+        # Vẽ bboxes cho ảnh đầu tiên
+        for i in range(len(bboxes)):
+
+            x1, y1, x2, y2 = bboxes[i]
+            id = class_ids[i]
+            conf = confidences[i]
+
+            # Vẽ bounding box
+            cv2.rectangle(orig_img, (x1, y1), (x2, y2), (0,255,0), 2)
+
+            # Viết class ID và confidence 
+            text = f'{id}: {conf:.2f}'
+            cv2.putText(orig_img, text, (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
+        cv2_imshow(orig_img)
         # try:
         #     img_test = img[0]  # Assuming img is defined elsewhere in your code
         #     img_test = img_test.cpu().numpy()
