@@ -99,36 +99,28 @@ class FastSAMPredictor(DetectionPredictor):
                 results.append(Results(orig_img=orig_img, path=img_path, names=self.model.names, boxes=pred[:, :6]))
                 continue
             if self.args.retina_masks:
-                print(pred.shape)
                 kept_boxes = torch.tensor([])
                 kept_boxes = kept_boxes.cuda()
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
-                # Tạo list để lưu các box giữ lại 
-                    
-
-                    try:
-                        for item in pred:
-                            box_np = item.detach().cpu().numpy()
-                            x1, y1, x2, y2 = box_np[:4].astype(int)
-                            
-                            cropped_img = orig_img[y1:y2, x1:x2]
-                            cropped_img = cropped_img / 255.
-                            
-                            pred = self.predict(cropped_img)
-            
-                            
-                            # Nếu pred == 1 thì giữ lại box
-                            if pred == 1:  
-                                kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
-                        
-                    except Exception as e:
-                            print(e)
                 
+                    for item in pred:
+                        box_np = item.detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
+                        
+                        cropped_img = orig_img[y1:y2, x1:x2]
+                        cropped_img = cropped_img / 255.
+                        
+                        pred = self.predict(cropped_img)
+        
+                        
+                        # Nếu pred == 1 thì giữ lại box
+                        if pred == 1:  
+                            kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
+            
                 pred = kept_boxes
                 print(proto[i].shape)
-                print(pred.shape)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
