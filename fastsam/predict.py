@@ -104,30 +104,21 @@ class FastSAMPredictor(DetectionPredictor):
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
-                try:
-                    print(pred.shape)
-                    for idx in range(pred.shape[0]):
-                        pr = pred[idx]
-                        box_np = pr.detach().cpu().numpy()
-                        x1, y1, x2, y2 = box_np[:4].astype(int)
-                        
-                        cropped_img = orig_img[y1:y2, x1:x2]
-                        cropped_img = cropped_img / 255.
-                        prediction = self.predict(cropped_img)
+                print(pred.shape)
+                for idx in range(pred.shape[0]):
+                    pr = pred[idx]
+                    box_np = pr.detach().cpu().numpy()
+                    x1, y1, x2, y2 = box_np[:4].astype(int)
+                    
+                    cropped_img = orig_img[y1:y2, x1:x2]
+                    cropped_img = cropped_img / 255.
+                    prediction = self.predict(cropped_img)
 
-                        if prediction == 1:
-                            # pr = pr.cuda()  
-                            kept_boxes = torch.cat([kept_boxes, pred[idx].unsqueeze(0)])
+                    if prediction == 1:
+                        # pr = pr.cuda()  
+                        kept_boxes = torch.cat([kept_boxes, pred[idx].unsqueeze(0)])
 
-                except Exception as e:
-                    print("e1")
-                    print(e)
-                try:
-                    print(pred.shape)
-                
-                    masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
-                except Exception as e:
-                    print(e)
+                masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
                 if not isinstance(orig_imgs, torch.Tensor):
