@@ -105,8 +105,8 @@ class FastSAMPredictor(DetectionPredictor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
                 
-                for item in pred:
-                    box_np = item.detach().cpu().numpy()
+                for i in range(pred.shape[0]):
+                    box_np = pred[i].detach().cpu().numpy()
                     x1, y1, x2, y2 = box_np[:4].astype(int)
                     
                     cropped_img = orig_img[y1:y2, x1:x2]
@@ -115,7 +115,7 @@ class FastSAMPredictor(DetectionPredictor):
                     prediction = self.predict(cropped_img)
                     if prediction == 1:
                         item = item.cuda()  
-                        kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
+                        kept_boxes = torch.cat([kept_boxes, pred[i].unsqueeze(0)])
                 try:
                     masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
                 except Exception as e:
