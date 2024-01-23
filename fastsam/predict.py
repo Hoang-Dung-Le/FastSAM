@@ -100,7 +100,7 @@ class FastSAMPredictor(DetectionPredictor):
                 continue
             if self.args.retina_masks:
                 print(type(pred))
-                kept_boxes = []
+                kept_boxes = torch.tensor([])
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
                 
@@ -120,7 +120,7 @@ class FastSAMPredictor(DetectionPredictor):
                             
                             # Nếu pred == 1 thì giữ lại box
                             if pred == 1:  
-                                kept_boxes.append(item)
+                                kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
                         
                     except Exception as e:
                             print(e)
