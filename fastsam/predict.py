@@ -134,6 +134,7 @@ class FastSAMPredictor(DetectionPredictor):
             if self.args.retina_masks:
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)
+                    print(pred.shape)
                     try:
                         for item in pred:
                             x1, y1, x2, y2 = item[:4]
