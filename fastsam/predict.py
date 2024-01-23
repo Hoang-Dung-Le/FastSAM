@@ -72,7 +72,8 @@ class FastSAMPredictor(DetectionPredictor):
                                     nc=len(self.model.names),
                                     classes=self.args.classes)
 
-
+        print(type(img))
+        print(len(p[0]))
         
         # try:
         #     img_test = img[0]  # Assuming img is defined elsewhere in your code
