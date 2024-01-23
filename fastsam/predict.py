@@ -106,8 +106,6 @@ class FastSAMPredictor(DetectionPredictor):
                 
                 
                     for item in pred:
-                        print("oksdf")
-                        print(item.shape)
                         box_np = item.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         
@@ -115,7 +113,8 @@ class FastSAMPredictor(DetectionPredictor):
                         cropped_img = cropped_img / 255.
                         
                         pred = self.predict(cropped_img)
-                        if pred == 1:  
+                        if pred == 1:
+                            item = item.cuda()  
                             kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
             
                 
