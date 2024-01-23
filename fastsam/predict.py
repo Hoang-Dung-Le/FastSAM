@@ -118,7 +118,7 @@ class FastSAMPredictor(DetectionPredictor):
                         if pred == 1:  
                             kept_boxes = torch.cat([kept_boxes, item.unsqueeze(0)])
             
-                pred = kept_boxes
+                
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
                 masks = ops.process_mask(proto[i], pred[:, 6:], pred[:, :4], img.shape[2:], upsample=True)  # HWC
