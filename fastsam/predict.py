@@ -54,6 +54,7 @@ class FastSAMPredictor(DetectionPredictor):
         self.model.to(device)
         print("ok5")
         input_batch = input_batch.to(device)
+        input_batch = input_batch.float()
         # Dự đoán
         print("ok6")
         with torch.no_grad():
