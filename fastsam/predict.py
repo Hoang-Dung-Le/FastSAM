@@ -127,7 +127,7 @@ class FastSAMPredictor(DetectionPredictor):
                             print(e)
                 
                 pred = kept_boxes
-
+                print(proto[i])
                 print(pred.shape)
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
