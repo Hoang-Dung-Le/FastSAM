@@ -124,7 +124,7 @@ class FastSAMPredictor(DetectionPredictor):
                 except Exception as e:
                     print(e)
 
-                print("ok")
+                print("ok hi hi")
                 try:
                     masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
                 except Exception as e:
