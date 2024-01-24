@@ -58,13 +58,13 @@ class FastSAMPredictor(DetectionPredictor):
         ])
         image = image.transpose((2, 0, 1))
         image = torch.from_numpy(image)
+        image = image.float()
         input_tensor = self.transform(image)
         input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
         input_batch = input_batch.to(device)
         print("ok")
-        input_batch = input_batch.float()
         with torch.no_grad():
             self.model.eval()
             output = self.model(input_batch)
