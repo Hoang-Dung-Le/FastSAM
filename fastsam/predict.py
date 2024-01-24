@@ -68,7 +68,6 @@ class FastSAMPredictor(DetectionPredictor):
         with torch.no_grad():
             self.model_1.eval()
             output = self.model_1(input_batch)
-        print(output)
         _, predicted_class = torch.max(output, 1)
 
         return predicted_class.item()
@@ -145,6 +144,7 @@ class FastSAMPredictor(DetectionPredictor):
                         cropped_img = orig_img[y1:y2, x1:x2]
                         # cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
+                        print(prediction)
                 except Exception as e:
                     print("loi ne ", e)
 
