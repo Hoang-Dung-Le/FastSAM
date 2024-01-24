@@ -123,6 +123,8 @@ class FastSAMPredictor(DetectionPredictor):
                     
                 try:
                     test = torch.clone(pred)
+                    for idx in range(test.shape[0]):
+                        pr = test[idx]
                 except Exception as e:
                     print("loi ne ", e)
 
