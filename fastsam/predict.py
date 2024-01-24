@@ -60,17 +60,18 @@ class FastSAMPredictor(DetectionPredictor):
         image = torch.from_numpy(image)
         image = image.float()
         input_tensor = self.transform(image)
-        input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
+        input_batch = input_tensor.unsqueeze(0)
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
         input_batch = input_batch.to(device)
-        print("ok")
-        with torch.no_grad():
-            self.model.eval()
-            output = self.model(input_batch)
-        _, predicted_class = torch.max(output, 1)
+        # with torch.no_grad():
+        #     self.model.eval()
+        #     output = self.model(input_batch)
+        # _, predicted_class = torch.max(output, 1)
 
-        return predicted_class.item()
+        # return predicted_class.item()
+
+        return 1
 
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
