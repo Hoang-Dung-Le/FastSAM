@@ -126,6 +126,7 @@ class FastSAMPredictor(DetectionPredictor):
                     for idx in range(test.shape[0]):
                         pr = test[idx]
                         box_np = pr.detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
                 except Exception as e:
                     print("loi ne ", e)
 
