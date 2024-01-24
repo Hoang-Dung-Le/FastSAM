@@ -127,6 +127,7 @@ class FastSAMPredictor(DetectionPredictor):
                         pr = test[idx]
                         box_np = pr.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
+                        cropped_img = orig_img[y1:y2, x1:x2]
                 except Exception as e:
                     print("loi ne ", e)
 
