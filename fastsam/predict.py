@@ -151,8 +151,11 @@ class FastSAMPredictor(DetectionPredictor):
                         box_np = pr.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         cropped_img = orig_img[y1:y2, x1:x2]
-                        # cropped_img = cropped_img / 255.
+                        cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
+                        if prediction == 1:
+                #             # pr = pr.cuda()  
+                            kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
                         # print(prediction)
                 except Exception as e:
                     print("loi ne ", e)
