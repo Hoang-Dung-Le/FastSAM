@@ -153,6 +153,7 @@ class FastSAMPredictor(DetectionPredictor):
                         cropped_img = orig_img[y1:y2, x1:x2]
                         cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
+                        print(prediction)
                         if prediction == 1:
                 #             # pr = pr.cuda()  
                             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
