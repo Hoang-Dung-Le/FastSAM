@@ -121,8 +121,10 @@ class FastSAMPredictor(DetectionPredictor):
                 # except Exception as e:
                 #     print(e)
                     
-                for item in pred:
-                    print("sdlkdflsd")
+                try:
+                    test = torch.clone(pred)
+                except Exception as e:
+                    print("loi ne ", e)
 
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
