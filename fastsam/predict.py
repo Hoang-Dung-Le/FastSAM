@@ -63,6 +63,7 @@ class FastSAMPredictor(DetectionPredictor):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
         input_batch = input_batch.to(device)
+        print("ok")
         input_batch = input_batch.float()
         with torch.no_grad():
             self.model.eval()
