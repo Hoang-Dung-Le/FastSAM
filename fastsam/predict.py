@@ -125,6 +125,7 @@ class FastSAMPredictor(DetectionPredictor):
                     test = torch.clone(pred)
                     for idx in range(test.shape[0]):
                         pr = test[idx]
+                        box_np = pr.detach().cpu().numpy()
                 except Exception as e:
                     print("loi ne ", e)
 
