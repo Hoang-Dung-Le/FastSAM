@@ -47,32 +47,32 @@ class FastSAMPredictor(DetectionPredictor):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
-        self.model = SimpleNet(num_classes=2)
-        self.model.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
+        self.model_1 = SimpleNet(num_classes=2)
+        self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
         
-    def predict(self, image):
-        self.model = SimpleNet(num_classes=2)
-        self.model.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
-        self.transform = transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ])
-        image = image.transpose((2, 0, 1))
-        image = torch.from_numpy(image)
-        image = image.float()
-        # input_tensor = self.transform(image)
-        # input_batch = input_tensor.unsqueeze(0)
-        # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        # self.model.to(device)
-        # input_batch = input_batch.to(device)
-        # with torch.no_grad():
-        #     self.model.eval()
-        #     output = self.model(input_batch)
-        # _, predicted_class = torch.max(output, 1)
+    # def predict(self, image):
+    #     self.model = SimpleNet(num_classes=2)
+    #     self.model.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
+    #     self.transform = transforms.Compose([
+    #         transforms.Resize((224, 224)),
+    #         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    #     ])
+    #     image = image.transpose((2, 0, 1))
+    #     image = torch.from_numpy(image)
+    #     image = image.float()
+    #     # input_tensor = self.transform(image)
+    #     # input_batch = input_tensor.unsqueeze(0)
+    #     # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #     # self.model.to(device)
+    #     # input_batch = input_batch.to(device)
+    #     # with torch.no_grad():
+    #     #     self.model.eval()
+    #     #     output = self.model(input_batch)
+    #     # _, predicted_class = torch.max(output, 1)
 
-        # return predicted_class.item()
+    #     # return predicted_class.item()
 
-        return 1
+    #     return 1
 
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
@@ -133,7 +133,7 @@ class FastSAMPredictor(DetectionPredictor):
                 # except Exception as e:
                 #     print(e)
                     
-                print(self.model)
+                print(self.model_1)
                     
                 try:
                     test = torch.clone(pred)
