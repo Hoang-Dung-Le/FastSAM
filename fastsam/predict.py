@@ -47,32 +47,41 @@ class FastSAMPredictor(DetectionPredictor):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
-        self.model_1 = SimpleNet(num_classes=2)
-        self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
+        # self.model_1 = SimpleNet(num_classes=2)
+        # self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
         
     def predict(self, image):
-        # self.model = SimpleNet(num_classes=2)
-        # self.model.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
+        self.model_1 = self._load_model('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
+            # transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
+
+        
+
         image = image.transpose((2, 0, 1))
         image = torch.from_numpy(image)
-        image = image.float()
         input_tensor = self.transform(image)
-        input_batch = input_tensor.unsqueeze(0)
+        input_batch = input_tensor.unsqueeze(0)  # Thêm chiều batch
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model_1.to(device)
         input_batch = input_batch.to(device)
+        input_batch = input_batch.float()
         with torch.no_grad():
             self.model_1.eval()
             output = self.model_1(input_batch)
         _, predicted_class = torch.max(output, 1)
-
         return predicted_class.item()
 
-        # return 1
+    def _load_model(self, model_path, num_classes):
+        # Khởi tạo mô hình ResNet34
+        model = models.resnet34()
+        model.fc = nn.Linear(model.fc.in_features, num_classes)
+        
+        # Load trạng thái đã được lưu của mô hình
+        model.load_state_dict(torch.load(model_path))
+        return model
 
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
@@ -144,7 +153,7 @@ class FastSAMPredictor(DetectionPredictor):
                         cropped_img = orig_img[y1:y2, x1:x2]
                         # cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
-                        print(prediction)
+                        # print(prediction)
                 except Exception as e:
                     print("loi ne ", e)
 
