@@ -47,7 +47,8 @@ class FastSAMPredictor(DetectionPredictor):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
-        # print(type(self.model))
+        self.model = SimpleNet(num_classes=2)
+        self.model.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
         
     def predict(self, image):
         self.model = SimpleNet(num_classes=2)
@@ -132,6 +133,8 @@ class FastSAMPredictor(DetectionPredictor):
                 # except Exception as e:
                 #     print(e)
                     
+                print(self.model)
+                    
                 try:
                     test = torch.clone(pred)
                     for idx in range(test.shape[0]):
@@ -140,7 +143,7 @@ class FastSAMPredictor(DetectionPredictor):
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         cropped_img = orig_img[y1:y2, x1:x2]
                         # cropped_img = cropped_img / 255.
-                        prediction = self.predict(cropped_img)
+                        # prediction = self.predict(cropped_img)
                 except Exception as e:
                     print("loi ne ", e)
 
