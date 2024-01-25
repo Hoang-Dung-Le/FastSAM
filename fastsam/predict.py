@@ -144,23 +144,23 @@ class FastSAMPredictor(DetectionPredictor):
                     
                 # print(self.model_1)
                     
-                try:
-                    test = torch.clone(pred)
-                    for idx in range(test.shape[0]):
-                        pr = test[idx]
-                        box_np = pr.detach().cpu().numpy()
-                        x1, y1, x2, y2 = box_np[:4].astype(int)
-                        cropped_img = orig_img[y1:y2, x1:x2]
-                        cropped_img = cropped_img / 255.
-                        prediction = self.predict(cropped_img)
-                        print(prediction)
-                        if prediction == 1:
-                #             # pr = pr.cuda()  
-                            kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
-                        # print(prediction)
-                    pred = kept_boxes
-                except Exception as e:
-                    print("loi ne ", e)
+                # try:
+                #     test = torch.clone(pred)
+                #     for idx in range(test.shape[0]):
+                #         pr = test[idx]
+                #         box_np = pr.detach().cpu().numpy()
+                #         x1, y1, x2, y2 = box_np[:4].astype(int)
+                #         cropped_img = orig_img[y1:y2, x1:x2]
+                #         cropped_img = cropped_img / 255.
+                #         prediction = self.predict(cropped_img)
+                #         print(prediction)
+                #         if prediction == 1:
+                # #             # pr = pr.cuda()  
+                #             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
+                #         # print(prediction)
+                #     pred = kept_boxes
+                # except Exception as e:
+                #     print("loi ne ", e)
 
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
