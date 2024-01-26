@@ -59,7 +59,7 @@ class FastSAMPredictor(DetectionPredictor):
         self.model_1 = resnet18(pretrained=True)
         self.model_1.eval()
 
-        print(self.model_1)
+        # print(self.model_1)
 
         # Define image preprocessing
         self.transform = transforms.Compose([
