@@ -144,8 +144,8 @@ class FastSAMPredictor(DetectionPredictor):
                         cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
               
-                        if prediction == 285 or prediction == 283 or \
-                            prediction == 284 or prediction == 281 or prediction == 282 :
+                        if prediction == 981 or prediction == 982 or \
+                            prediction == 724 or prediction == 983 :
                 #             # pr = pr.cuda()  
                             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
                         # print(prediction)
