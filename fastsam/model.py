@@ -22,8 +22,8 @@ from .predict import FastSAMPredictor
 class FastSAM(YOLO):
 
 
-    def __init__(self, output_img=None):  # Sửa đổi phương thức khởi tạo
-        super().__init__() 
+    def __init__(self, output_img, *args, **kwargs):  # Sửa đổi phương thức khởi tạo
+        super().__init__(*args, **kwargs)
         self.output_img = output_img
     @smart_inference_mode()
     def predict(self, source=None, stream=False, **kwargs):
