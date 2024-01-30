@@ -25,7 +25,7 @@ class FastSAM(YOLO):
     def __init__(self, output_img=None):  # Sửa đổi phương thức khởi tạo
         super().__init__()  # Gọi phương thức khởi tạo của class cha (YOLO)
         self.output_img = output_img
-
+        print(output_img)
     @smart_inference_mode()
     def predict(self, source=None, stream=False, **kwargs):
         """

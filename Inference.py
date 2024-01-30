@@ -75,6 +75,7 @@ def main(args):
     # load model
     # print(args.output)
     output_img = str(args.output)
+    print(output_img)
     model = FastSAM(args.model_path, output_img=output_img)
     args.point_prompt = ast.literal_eval(args.point_prompt)
     args.box_prompt = convert_box_xywh_to_xyxy(ast.literal_eval(args.box_prompt))
