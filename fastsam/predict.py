@@ -143,11 +143,11 @@ class FastSAMPredictor(DetectionPredictor):
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         cropped_img = orig_img[y1:y2, x1:x2]
                         path = self.output + f"/img{x1}.png"
-                        print(path)
+                        # print(path)
                         cv2.imwrite(path, cropped_img)
                         cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
-                        print(prediction)
+                        # print(prediction)
                         if prediction == 1:  
                             
                             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
