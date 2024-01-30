@@ -49,13 +49,13 @@ class FastSAMPredictor(DetectionPredictor):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
         self.output =output
-        # self.model_1 = SimpleNet(num_classes=2)
-        # self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
-        # self.transform = transforms.Compose([
-        #     transforms.Resize((224, 224)),
-        #     # transforms.ToTensor(),
-        #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        # ])
+        self.model_1 = SimpleNet(num_classes=2)
+        self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/modelresnet_ade20k_val.pth'))
+        self.transform = transforms.Compose([
+            transforms.Resize((224, 224)),
+            # transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
 
         # self.model_1 = resnet18(pretrained=True)
         # self.model_1.eval()
@@ -145,16 +145,14 @@ class FastSAMPredictor(DetectionPredictor):
                         path = self.output + f"/img{x1}.png"
                         print(path)
                         cv2.imwrite(path, cropped_img)
-                #         cropped_img = cropped_img / 255.
-                #         prediction = self.predict(cropped_img)
-                #         print(prediction)
-                #         if prediction == 981 or prediction == 982 or \
-                #             prediction == 724 or prediction == 983 :
-                # #             # pr = pr.cuda()  
+                        cropped_img = cropped_img / 255.
+                        prediction = self.predict(cropped_img)
+                        print(prediction)
+                        if prediction == 1:  
                             
-                #             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
-                #         # print(prediction)
-                #     pred = kept_boxes
+                            kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
+                        # print(prediction)
+                    pred = kept_boxes
                 except Exception as e:
                     print("loi ne ", e)
 
