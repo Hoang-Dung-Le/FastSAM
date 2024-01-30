@@ -45,10 +45,10 @@ class SimpleNet(nn.Module):
 
 class FastSAMPredictor(DetectionPredictor):
 
-    def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None,args=None):
+    def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None,output=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
-        self.args =args
+        self.output =output
         # self.model_1 = SimpleNet(num_classes=2)
         # self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
         # self.transform = transforms.Compose([
@@ -142,7 +142,7 @@ class FastSAMPredictor(DetectionPredictor):
                         box_np = pr.detach().cpu().numpy()
                         x1, y1, x2, y2 = box_np[:4].astype(int)
                         cropped_img = orig_img[y1:y2, x1:x2]
-                        path = self.args.output + f"img{x1}.png"
+                        path = self.output + f"img{x1}.png"
                         cv2.imwrite(path, cropped_img)
                 #         cropped_img = cropped_img / 255.
                 #         prediction = self.predict(cropped_img)
