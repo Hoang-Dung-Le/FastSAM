@@ -22,7 +22,7 @@ from .predict import FastSAMPredictor
 class FastSAM(YOLO):
 
 
-    def __init__(self, model, output_img):  # Sửa đổi phương thức khởi tạo
+    def __init__(self, model, output_img=None):  # Sửa đổi phương thức khởi tạo
         super().__init__(model)
         self.output_img = output_img
     @smart_inference_mode()
