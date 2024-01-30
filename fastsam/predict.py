@@ -56,17 +56,17 @@ class FastSAMPredictor(DetectionPredictor):
         #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         # ])
 
-        self.model_1 = resnet18(pretrained=True)
-        self.model_1.eval()
+        # self.model_1 = resnet18(pretrained=True)
+        # self.model_1.eval()
 
-        # print(self.model_1)
+        # # print(self.model_1)
 
-        # Define image preprocessing
-        self.transform = transforms.Compose([
-            transforms.Resize((224, 224)),
-            # transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ])
+        # # Define image preprocessing
+        # self.transform = transforms.Compose([
+        #     transforms.Resize((224, 224)),
+        #     # transforms.ToTensor(),
+        #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        # ])
 
     def predict(self, image):
         # self.model_1 = self._load_model('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_resnet34.pth', 2)
