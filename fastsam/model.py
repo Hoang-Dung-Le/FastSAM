@@ -22,9 +22,9 @@ from .predict import FastSAMPredictor
 class FastSAM(YOLO):
 
 
-    def __init__(self, output):  # Sửa đổi phương thức khởi tạo
+    def __init__(self, output_img=None):  # Sửa đổi phương thức khởi tạo
         super().__init__()  # Gọi phương thức khởi tạo của class cha (YOLO)
-        self.output = output
+        self.output_img = output_img
 
     @smart_inference_mode()
     def predict(self, source=None, stream=False, **kwargs):
@@ -51,7 +51,7 @@ class FastSAM(YOLO):
         assert overrides['mode'] in ['track', 'predict']
         overrides['save'] = kwargs.get('save', False)  # do not save by default if called in Python
         print(self.args.output)
-        self.predictor = FastSAMPredictor(overrides=overrides, output=self.output)
+        self.predictor = FastSAMPredictor(overrides=overrides, output=self.output_img)
         self.predictor.setup_model(model=self.model, verbose=False)
         try:
             return self.predictor(source, stream=stream)
