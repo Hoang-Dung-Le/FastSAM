@@ -134,13 +134,14 @@ class FastSAMPredictor(DetectionPredictor):
                 kept_boxes = kept_boxes.cuda()
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)     
-                # try:
-                #     test = torch.clone(pred)
-                #     for idx in range(test.shape[0]):
-                #         pr = test[idx]
-                #         box_np = pr.detach().cpu().numpy()
-                #         x1, y1, x2, y2 = box_np[:4].astype(int)
-                #         cropped_img = orig_img[y1:y2, x1:x2]
+                try:
+                    test = torch.clone(pred)
+                    for idx in range(test.shape[0]):
+                        pr = test[idx]
+                        box_np = pr.detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
+                        cropped_img = orig_img[y1:y2, x1:x2]
+                        print(cropped_img)
                 #         cropped_img = cropped_img / 255.
                 #         prediction = self.predict(cropped_img)
                 #         print(prediction)
@@ -151,8 +152,8 @@ class FastSAMPredictor(DetectionPredictor):
                 #             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
                 #         # print(prediction)
                 #     pred = kept_boxes
-                # except Exception as e:
-                #     print("loi ne ", e)
+                except Exception as e:
+                    print("loi ne ", e)
 
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
