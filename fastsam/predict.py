@@ -45,9 +45,10 @@ class SimpleNet(nn.Module):
 
 class FastSAMPredictor(DetectionPredictor):
 
-    def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
+    def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None,args=None):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
+        self.args =args
         # self.model_1 = SimpleNet(num_classes=2)
         # self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/model_custom.pth'))
         # self.transform = transforms.Compose([
