@@ -144,7 +144,7 @@ class FastSAMPredictor(DetectionPredictor):
                         cropped_img = orig_img[y1:y2, x1:x2]
                         path = self.output + f"img{x1}.png"
                         # print(path)
-                        cv2.imwrite(path, cropped_img)
+                        # cv2.imwrite(path, cropped_img)
                         cropped_img = cropped_img / 255.
                         prediction = self.predict(cropped_img)
                         # print(prediction)
