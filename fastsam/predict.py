@@ -49,13 +49,13 @@ class FastSAMPredictor(DetectionPredictor):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
         self.output =output
-        self.model_1 = SimpleNet(num_classes=2)
-        self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/modelresnet_ade20k_val.pth'))
-        self.transform = transforms.Compose([
-            transforms.Resize((224, 224)),
-            # transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        ])
+        # self.model_1 = SimpleNet(num_classes=2)
+        # self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/modelresnet_ade20k_val.pth'))
+        # self.transform = transforms.Compose([
+        #     transforms.Resize((224, 224)),
+        #     # transforms.ToTensor(),
+        #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        # ])
 
         # self.model_1 = resnet18(pretrained=True)
         # self.model_1.eval()

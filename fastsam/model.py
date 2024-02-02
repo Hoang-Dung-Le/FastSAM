@@ -25,6 +25,7 @@ class FastSAM(YOLO):
     def __init__(self, model, output_img=None):  # Sửa đổi phương thức khởi tạo
         super().__init__(model)
         self.output_img = output_img
+
     @smart_inference_mode()
     def predict(self, source=None, stream=False, **kwargs):
         """
@@ -40,6 +41,7 @@ class FastSAM(YOLO):
         Returns:
             (List[ultralytics.yolo.engine.results.Results]): The prediction results.
         """
+        print(self.model)
         if source is None:
             source = ROOT / 'assets' if is_git_dir() else 'https://ultralytics.com/images/bus.jpg'
             LOGGER.warning(f"WARNING ⚠️ 'source' is missing. Using 'source={source}'.")
