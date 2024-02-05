@@ -49,13 +49,13 @@ class FastSAMPredictor(DetectionPredictor):
         super().__init__(cfg, overrides, _callbacks)
         self.args.task = 'segment'
         self.output =output
-        # self.model_1 = SimpleNet(num_classes=2)
-        # self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/modelresnet_ade20k_val.pth'))
-        # self.transform = transforms.Compose([
-        #     transforms.Resize((224, 224)),
-        #     # transforms.ToTensor(),
-        #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        # ])
+        self.model_1 = SimpleNet(num_classes=2)
+        self.model_1.load_state_dict(torch.load('/content/drive/MyDrive/CV/fastsam/classifier_checkpoint/modelresnet_ade20k_val.pth'))
+        self.transform = transforms.Compose([
+            transforms.Resize((224, 224)),
+            # transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
 
         # self.model_1 = resnet18(pretrained=True)
         # self.model_1.eval()
@@ -87,12 +87,13 @@ class FastSAMPredictor(DetectionPredictor):
 
     def _load_model(self, model_path, num_classes):
         # Khởi tạo mô hình ResNet34
-        model = models.resnet34()
-        model.fc = nn.Linear(model.fc.in_features, num_classes)
+        # model = models.resnet34()
+        # model.fc = nn.Linear(model.fc.in_features, num_classes)
         
         # Load trạng thái đã được lưu của mô hình
-        model.load_state_dict(torch.load(model_path))
-        return model
+        # model.load_state_dict(torch.load(model_path))
+        # return model
+        pass
 
     def postprocess(self, preds, img, orig_imgs):
         """TODO: filter by classes."""
@@ -135,26 +136,26 @@ class FastSAMPredictor(DetectionPredictor):
                 kept_boxes = kept_boxes.cuda()
                 if not isinstance(orig_imgs, torch.Tensor):
                     pred[:, :4] = ops.scale_boxes(img.shape[2:], pred[:, :4], orig_img.shape)     
-                # try:
-                #     test = torch.clone(pred)
-                #     for idx in range(test.shape[0]):
-                #         pr = test[idx]
-                #         box_np = pr.detach().cpu().numpy()
-                #         x1, y1, x2, y2 = box_np[:4].astype(int)
-                #         cropped_img = orig_img[y1:y2, x1:x2]
-                #         path = self.output + f"img{x1}.png"
-                #         # print(path)
-                #         # cv2.imwrite(path, cropped_img)
-                #         cropped_img = cropped_img / 255.
-                #         prediction = self.predict(cropped_img)
-                #         # print(prediction)
-                #         if prediction == 1:  
+                try:
+                    test = torch.clone(pred)
+                    for idx in range(test.shape[0]):
+                        pr = test[idx]
+                        box_np = pr.detach().cpu().numpy()
+                        x1, y1, x2, y2 = box_np[:4].astype(int)
+                        cropped_img = orig_img[y1:y2, x1:x2]
+                        path = self.output + f"img{x1}.png"
+                        # print(path)
+                        # cv2.imwrite(path, cropped_img)
+                        cropped_img = cropped_img / 255.
+                        prediction = self.predict(cropped_img)
+                        # print(prediction)
+                        if prediction == 1:  
                             
-                #             kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
-                #         # print(prediction)
-                #     pred = kept_boxes
-                # except Exception as e:
-                #     print("loi ne ", e)
+                            kept_boxes = torch.cat([kept_boxes, test[idx].unsqueeze(0)])
+                        # print(prediction)
+                    pred = kept_boxes
+                except Exception as e:
+                    print("loi ne ", e)
 
                 masks = ops.process_mask_native(proto[i], pred[:, 6:], pred[:, :4], orig_img.shape[:2])  # HWC
             else:
